@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='coursecompletion',
             name='end',
-            field=models.DateField(blank=True, default=django.utils.timezone.now),
+            field=models.DateField(blank=True),
         ),
         migrations.AlterField(
             model_name='coursecompletion',
             name='start',
-            field=models.DateField(blank=True, default=django.utils.timezone.now),
+            field=models.DateField(blank=True),
         ),
     ]
