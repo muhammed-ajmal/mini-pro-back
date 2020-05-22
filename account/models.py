@@ -21,8 +21,8 @@ class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
 
 class CourseCompletion(models.Model):
-    start = models.DateField(blank=True, null=False, default=timezone.now)
-    end = models.DateField(blank=True, null=False,default=timezone.now)
+    start = models.DateField(blank=True, null=False)
+    end = models.DateField(blank=True, null=False)
     number_of_students = models.IntegerField(default=300)
     number_of_graduates = models.IntegerField(default=0)
     number_of_placed = models.IntegerField(default=0)
