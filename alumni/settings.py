@@ -103,9 +103,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+  #  'django.middleware.common.CommonMiddleware',
+ #   'django.middleware.security.SecurityMiddleware',
+#    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'alumni.urls'
@@ -207,4 +207,4 @@ MAX_UPLOAD_SIZE = "1048576"
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
