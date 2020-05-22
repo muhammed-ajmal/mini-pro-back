@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='coursecompletion',
             name='end',
-            field=models.DateField(blank=True, default=datetime.datetime(2020, 5, 21, 12, 49, 3, 569417, tzinfo=utc)),
+            field=models.DateField(blank=True, default='2020-05-21'),
         ),
         migrations.AlterField(
             model_name='coursecompletion',
             name='start',
-            field=models.DateField(blank=True, default=datetime.datetime(2020, 5, 21, 12, 49, 3, 569389, tzinfo=utc)),
+            field=models.DateField(blank=True, default='2020-05-21'),
         ),
     ]
