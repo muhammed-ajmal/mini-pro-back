@@ -23,3 +23,6 @@ django-cors-headers
 gunicorn==19.6.0
 Unipath==1.0
 whitenoise==5.0.1
+
+psycopg2
+
