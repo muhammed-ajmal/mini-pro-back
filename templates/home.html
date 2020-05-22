@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheet %}
+{% endblock %}
+{% block content %}
+
+<div class="container">
+
+  <!-- Jumbotron Header -->
+  <div class="wow fadeIn">
+
+  <header style="background-color:#fff !important"class="jumbotron my-4 hoverable">
+
+  </header>
+</div>
+  <div class="badge badge-primary text-wrap" style="">
+    Recent Updates</div>
+  <!-- Page Features -->
+  <div class="row text-center">
+
+
+
+    <div class="wow fadeIn">
+    <!-- News jumbotron -->
+    <div style="background-color:#fff !important" class="jumbotron text-center hoverable p-4">
+      <!-- Grid row -->
+      <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-4 offset-md-1 mx-3 my-3">
+
+          <!-- Featured image -->
+          <div class="view overlay">
+            <img src="{{ feature.cover.url }}" class="img-fluid" alt=" image for first version of blog listing">
+            <a>
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+
+        </div>
+        <div class="col-md-7 text-md-left ml-3 mt-3">
+
+          <!-- Excerpt -->
+          <a href="#!" class="green-text">
+            <h6 class="h6 pb-1"><i class="fas fa- pr-1"></i></h6>
+          </a>
+
+          <h4 class="h4 mb-4"></h4>
+
+          <p class="font-weight-normal"></p>
+          <p class="font-weight-normal">by <a><strong></strong></a>, </p>
+
+          <a href="#" class="btn btn-success">Read more</a>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+  </div>
+
+
+  <!--Section: Contact v.2-->
+  <section class="mb-4">
+
+      <!--Section heading-->
+      <h2 class="h1-responsive font-weight-bold text-center my-4">Reach us</h2>
+      <!--Section description-->
+      <p class="text-center w-responsive mx-auto mb-5">Do you have any questions? Please do not hesitate to contact us directly. Our team will come back to you within
+          a matter of hours to help you.</p>
+
+      <div id='contact' class="row">
+
+          <!--Grid column-->
+          <div class="col-md-9 mb-md-0 mb-5">
+              <form id="contact-form" name="contact-form" method="POST" novalidate>
+
+                {% csrf_token %}
+                {% include 'includes/form.html' %}
+                <button type="submit" class="btn btn-success">Send</button>
+                  <!--Grid row-->
+
+              </form>
+
+              <div class="text-center text-md-left">
+
+              </div>
+              <div class="status"></div>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-md-3 text-center">
+              <ul class="list-unstyled mb-0">
+                  <li><i class="fas fa-map-marker-alt fa-2x"></i>
+                      <p>CUCEK , Alappuzha </p>
+                  </li>
+
+                  <li><i class="fas fa-phone mt-4 fa-2x"></i>
+                      <p>+ 91 *** *** ****</p>
+                  </li>
+
+                  <li><i class="fas fa-envelope mt-4 fa-2x"></i>
+                      <p>alumni@cucek.in</p>
+                  </li>
+              </ul>
+          </div>
+          <!--Grid column-->
+
+      </div>
+
+  </section>
+</div>
+
+
+{% endblock %}

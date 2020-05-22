@@ -1,0 +1,20 @@
+#Django
+Django === 3.0.3
+
+#send_verification_mail
+six
+django-widget-tweaks
+#widget_tweaks
+django-ckeditor
+#ckeditor
+Pillow
+#strictly separate the settings parameters
+python-decouple
+#safe db url,credentials
+dj-database-url
+#import-export
+django-import-export
+#rest
+djangorestframework
+#
+django-cors-headers

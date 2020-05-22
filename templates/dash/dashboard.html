@@ -1,0 +1,35 @@
+{% extends 'dash/dashbase.html' %}
+{% block dashtitle %}Home {% endblock %}
+{% block body %}
+<!--Grid column-->
+<div class="col-lg-12">
+
+  <!--Card-->
+  <div class="card">
+
+    <!-- Card header -->
+
+
+    <!--Card content-->
+    <div class="card-body">
+{% if alumni.verify_status == False %}
+      <div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">Oh Your Account is not auto verifield You can try Other Methods To verify your account!</h4>
+  <p>Try to use the college registerd email id and Mobile number for auto verification of your account</p>
+  <hr>
+  <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+</div>
+
+<a href="{% url 'update_email' %}" class="btn btn-light-blue">Update Your Email ID and Re-verify(Auto Verify)</a>
+<button type="button" class="btn btn-light-blue">Verify Using Mobile Number OTP(Auto Verify)</button>
+<button type="button" class="btn btn-unique">Verify Using Your Certificates and ID Cards (Manual Verification)</button>
+
+{% endif %}
+
+    </div>
+
+  </div>
+  <!--/.Card-->
+
+</div>
+{% endblock %}

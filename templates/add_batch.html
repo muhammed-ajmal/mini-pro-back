@@ -1,0 +1,45 @@
+{% extends 'base_accounts.html' %}
+
+{% block title %}Sign up as Alumni{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Add New Batch</h3>
+          <form method="post" id="batchForm" data-years-url="{% url 'ajax_load_years' %}" novalidate>
+            {% csrf_token %}
+            {% include 'includes/form.html' %}
+            <button type="submit" class="btn btn-primary btn-block">Add New Batch</button><a   href="javascript:close_window();" class="btn btn-primary btn-block" onclick="close_window();return false;">GO BACK</a>
+          </form>
+          <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    function close_window() {
+  if (confirm("Close Window?")) {
+    close();
+  }
+}
+    $("#id_start_year").change(function () {
+      var url = $("#batchForm").attr("data-years-url");  // get the url of the `load_cities` view
+      var start_yearId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'start_year': start_yearId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_end_year").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
