@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='coursecompletion',
             name='end',
-            field=models.DateField(blank=True, default='2020-05-21'),
+            field=models.DateField(blank=True),
         ),
         migrations.AlterField(
             model_name='coursecompletion',
             name='start',
-            field=models.DateField(blank=True, default='2020-05-21'),
+            field=models.DateField(blank=True),
         ),
     ]
