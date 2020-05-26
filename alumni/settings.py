@@ -208,5 +208,5 @@ MAX_UPLOAD_SIZE = "1048576"
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())
