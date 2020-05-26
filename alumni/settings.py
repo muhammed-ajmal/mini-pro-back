@@ -181,14 +181,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/staticfiles/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -210,5 +208,5 @@ MAX_UPLOAD_SIZE = "1048576"
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-django_heroku.settings(locals())
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+django_heroku.settings(locals())
