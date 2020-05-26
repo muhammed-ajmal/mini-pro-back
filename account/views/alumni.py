@@ -30,7 +30,7 @@ def sendmail(request,user,form):
     'token': account_activation_token.make_token(user),
     })
     to_email = form.cleaned_data.get('email')
-    email = EmailMessage(email_subject, message, to=[to_email],from_email=['alumni@cucek.in'])
+    email = EmailMessage(email_subject, message, to=[to_email],from_email='alumni@cucek.in')
     email.send()
 
 
