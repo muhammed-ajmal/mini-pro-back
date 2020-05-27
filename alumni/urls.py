@@ -21,7 +21,6 @@ from home import views as home_views
 
 urlpatterns = [
     path('admin/', admin.site.urls,),
-    path('api/', include('api.urls')),
     path('signup/', alumni.AlumniSignUpView.as_view(), name='signup'),
     path('signup/add/batch',alumni.AddBatchView.as_view(), name = 'add_batch'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
@@ -47,6 +46,8 @@ urlpatterns = [
         auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),
         name='password_reset_confirm'),
     path('profile/update/email', alumni.update_email, name = 'update_email'),
+    path('profile/update/phone', alumni.send_sms, name = 'send_sms'),
+    path('verification/token/', alumni.sms_token_validation, name='sms_token_validation'),  # noqa: E501
     path('profile/update/account', alumni.update_profile, name='update_profile'),
     path('', home_views.homeviews, name='home'),
     path('h/',home_views.userviews, name = 'userview'),
