@@ -10,6 +10,9 @@ from userdb.models import AlumniDB
 
 from django.utils.safestring import mark_safe
 
+import phonenumbers
+from phonenumbers import NumberParseException
+
 class AlumniSignUpForm(UserCreationForm):
     email = forms.CharField(max_length=254, required=True, widget=forms.EmailInput())
     batch = forms.ModelChoiceField(
@@ -91,3 +94,28 @@ class MiscBatchForm(forms.ModelForm):
     class Meta:
         model = CourseCompletion
         fields = ('start', 'end')
+
+class AccountActivationPhoneForm(forms.Form):
+    country_code = forms.CharField(max_length=3)
+    phone_number = forms.CharField(max_length=10)
+    via = forms.ChoiceField(
+        choices=[('sms', 'SMS'), ('call', 'Call')])
+
+    def clean_country_code(self):
+        country_code = self.cleaned_data['country_code']
+        if not country_code.startswith('+'):
+            country_code = '+' + country_code
+        return country_code
+
+    def clean(self):
+        data = self.cleaned_data
+        phone_number = data['country_code'] + data['phone_number']
+        try:
+            phone_number = phonenumbers.parse(phone_number, None)
+            if not phonenumbers.is_valid_number(phone_number):
+                self.add_error('phone_number', 'Invalid phone number')
+        except NumberParseException as e:
+            self.add_error('phone_number', e)
+
+class TokenForm(forms.Form):
+    token = forms.CharField(max_length=6)

@@ -17,8 +17,12 @@ from .token_generator import account_activation_token
 from django.core.mail import EmailMessage
 
 from ..choices import yearsend
-from ..forms import AlumniSignUpForm,AccountActivationForm,UserForm,ProfileForm,EmailUpdateForm,MiscBatchForm
+from ..forms import AlumniSignUpForm,AccountActivationForm,UserForm,ProfileForm,EmailUpdateForm,MiscBatchForm,AccountActivationPhoneForm,TokenForm
 from ..models import Alumni,User,AlumniDB,CourseCompletion
+
+from django.conf import settings
+from authy.api import AuthyApiClient
+authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
 def sendmail(request,user,form):
     current_site = get_current_site(request)
@@ -33,7 +37,48 @@ def sendmail(request,user,form):
     email = EmailMessage(email_subject, message, to=[to_email],from_email='alumni@cucek.in')
     email.send()
 
+@login_required
+@transaction.atomic
+def send_sms(request):
+    if request.method == 'POST':
+        form = AccountActivationPhoneForm(request.POST,initial={'country_code': '+91','phone_number':request.user.alumni.contact})
+        if form.is_valid():
+            request.session['phone_number'] = form.cleaned_data['phone_number']
+            request.session['country_code'] = form.cleaned_data['country_code']
+            authy_api.phones.verification_start(
+                form.cleaned_data['phone_number'],
+                form.cleaned_data['country_code'],
+                via=form.cleaned_data['via']
+            )
+            return redirect('sms_token_validation')
+    else:
+        form = AccountActivationPhoneForm(initial={'country_code': '+91','phone_number':request.user.alumni.contact})
+    return render (request, 'resend_activation_mail.html',{'form': form} )
 
+@login_required
+@transaction.atomic
+def sms_token_validation(request):
+    if request.method == 'POST':
+        form = TokenForm(request.POST)
+        if form.is_valid():
+            verification = authy_api.phones.verification_check(
+                request.session['phone_number'],
+                request.session['country_code'],
+                form.cleaned_data['token']
+            )
+            if verification.ok():
+                if AlumniDB.objects.filter(contact=request.user.alumni.contact).exists():
+                    request.user.alumni.verify_status = True
+                    request.user.alumni.save()
+                return redirect('userview')
+            else:
+                for error_msg in verification.errors().values():
+                    form.add_error(None, error_msg)
+    else:
+        form = TokenForm()
+    return render(request, 'resend_activation_mail.html', {'form': form})
+
+    
 class AlumniSignUpView(CreateView):
     model = User
     form_class = AlumniSignUpForm
