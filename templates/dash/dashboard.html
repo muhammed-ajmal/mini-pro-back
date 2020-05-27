@@ -21,7 +21,7 @@
 </div>
 
 <a href="{% url 'update_email' %}" class="btn btn-light-blue">Update Your Email ID and Re-verify(Auto Verify)</a>
-<button type="button" class="btn btn-light-blue">Verify Using Mobile Number OTP(Auto Verify)</button>
+<a href="{% url 'send_sms' %}" type="button" class="btn btn-light-blue">Verify Using Mobile Number OTP(Auto Verify)</a>
 <button type="button" class="btn btn-unique">Verify Using Your Certificates and ID Cards (Manual Verification)</button>
 
 {% endif %}
