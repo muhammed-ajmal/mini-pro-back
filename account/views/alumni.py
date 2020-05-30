@@ -34,7 +34,7 @@ def sendmail(request,user,form):
     'token': account_activation_token.make_token(user),
     })
     to_email = form.cleaned_data.get('email')
-    email = EmailMessage(email_subject, message, to=[to_email],from_email='alumni@cucek.in')
+    email = EmailMessage(email_subject, message, to=[to_email],from_email='noreply@mg.alumni-cucek.ml')
     email.send()
 
 @login_required
@@ -78,7 +78,7 @@ def sms_token_validation(request):
         form = TokenForm()
     return render(request, 'resend_activation_mail.html', {'form': form})
 
-    
+
 class AlumniSignUpView(CreateView):
     model = User
     form_class = AlumniSignUpForm

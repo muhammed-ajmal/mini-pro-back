@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'import_export',
 
     #API
+    'community',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -209,6 +210,9 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 MAX_UPLOAD_SIZE = "1048576"
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+DISCOURSE_BASE_URL = config('DISCOURSE_BASE_URL')
+DISCOURSE_SSO_SECRET = config('DISCOURSE_SSO_SECRET')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())
