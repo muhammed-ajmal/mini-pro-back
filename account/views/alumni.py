@@ -20,6 +20,8 @@ from ..choices import yearsend
 from ..forms import AlumniSignUpForm,AccountActivationForm,UserForm,ProfileForm,EmailUpdateForm,MiscBatchForm,AccountActivationPhoneForm,TokenForm
 from ..models import Alumni,User,AlumniDB,CourseCompletion
 
+import requests
+
 from django.conf import settings
 from authy.api import AuthyApiClient
 authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
@@ -138,6 +140,18 @@ def activate_account(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+        alumni = Alumni.objects.get(user=user)
+        groupname = str(alumni.department)+'-'+str(alumni.batch)
+        headers = {
+         'Api-Key': settings.DISCOURSE_API,
+          'Api-Username': 'dev'
+        }
+        url = 'https://community.alumni-cucek.ml/admin/groups'
+        params = {
+        "group[name]": groupname
+        }
+        resp = requests.post(url, params=params, headers=headers)
+        print(resp.text)
         login(request, user)
         #return HttpResponse('Your account has been activate successfully')
         return redirect('userview')

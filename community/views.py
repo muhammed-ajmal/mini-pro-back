@@ -9,6 +9,9 @@ from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
+from account.models import Alumni
+
+
 @login_required
 def sso(request):
     payload = request.GET.get('sso')
@@ -47,9 +50,13 @@ def sso(request):
         'email': request.user.email,
         'external_id': request.user.id,
         'username': request.user.username,
-        'require_activation': 'false'
+        'require_activation': 'false',
     }
 
+    if request.user.is_alumni:
+        alumni = Alumni.objects.get(user=request.user)
+        groupname = str(alumni.department)+'-'+str(alumni.batch)
+        params['add_groups'] = groupname
     if request.user.is_superuser:
         params['admin'] = 'true'
     return_payload = base64.encodestring(bytes(parse.urlencode(params), 'utf-8'))

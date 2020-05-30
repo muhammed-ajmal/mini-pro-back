@@ -213,6 +213,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 DISCOURSE_BASE_URL = config('DISCOURSE_BASE_URL')
 DISCOURSE_SSO_SECRET = config('DISCOURSE_SSO_SECRET')
+DISCOURSE_API = config('DISCOURSE_API')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())
