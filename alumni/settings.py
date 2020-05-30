@@ -73,12 +73,12 @@ INSTALLED_APPS = [
     'import_export',
 
     #API
-    'community',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
 
     #Apps
+    'community',
     'account',
     'userdb',
     'api',

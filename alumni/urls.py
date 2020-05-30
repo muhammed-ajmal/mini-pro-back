@@ -19,6 +19,9 @@ from django.contrib.auth import views as auth_views
 from account.views import alumni
 from home import views as home_views
 
+from community import views as community_views
+
+
 urlpatterns = [
     path('admin/', admin.site.urls,),
     path('signup/', alumni.AlumniSignUpView.as_view(), name='signup'),
@@ -49,6 +52,7 @@ urlpatterns = [
     path('profile/update/phone', alumni.send_sms, name = 'send_sms'),
     path('verification/token/', alumni.sms_token_validation, name='sms_token_validation'),  # noqa: E501
     path('profile/update/account', alumni.update_profile, name='update_profile'),
+    path('connect/sso', community_views.sso),
     path('', home_views.homeviews, name='home'),
     path('h/',home_views.userviews, name = 'userview'),
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
