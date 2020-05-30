@@ -8,9 +8,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
 
 from account.models import Alumni
 
+def alumniBatchGroups(request):
+    return redirect('https://community.alumni-cucek.ml/g')
 
 @login_required
 def sso(request):

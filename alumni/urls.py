@@ -53,6 +53,7 @@ urlpatterns = [
     path('verification/token/', alumni.sms_token_validation, name='sms_token_validation'),  # noqa: E501
     path('profile/update/account', alumni.update_profile, name='update_profile'),
     path('connect/sso', community_views.sso),
+    path('connect/batchs/', community_views.alumniBatchGroups, name='group_view'),
     path('', home_views.homeviews, name='home'),
     path('h/',home_views.userviews, name = 'userview'),
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

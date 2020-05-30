@@ -9,109 +9,91 @@
   <!-- Jumbotron Header -->
   <div class="wow fadeIn">
 
-  <header style="background-color:#fff !important"class="jumbotron my-4 hoverable">
+    <header style="background-color:#fff !important" class="jumbotron my-4 hoverable">
+      Explore. Connect. Learn. Grab. Upgrade.
 
-  </header>
-</div>
-  <div class="badge badge-primary text-wrap" style="">
-    Recent Updates</div>
-  <!-- Page Features -->
-  <div class="row text-center">
+    </header>
+  </div>
 
 
+  <div class="wow fadeIn">
 
-    <div class="wow fadeIn">
-    <!-- News jumbotron -->
-    <div style="background-color:#fff !important" class="jumbotron text-center hoverable p-4">
-      <!-- Grid row -->
-      <div class="row">
 
-        <!-- Grid column -->
-        <div class="col-md-4 offset-md-1 mx-3 my-3">
 
-          <!-- Featured image -->
-          <div class="view overlay">
-            <img src="{{ feature.cover.url }}" class="img-fluid" alt=" image for first version of blog listing">
-            <a>
-              <div class="mask rgba-white-slight"></div>
-            </a>
-          </div>
+    <!-- Card -->
+    <div class="card card-image" style="background-image: url({% static 'img/connect.jpeg' %});">
 
-        </div>
-        <div class="col-md-7 text-md-left ml-3 mt-3">
-
-          <!-- Excerpt -->
-          <a href="#!" class="green-text">
-            <h6 class="h6 pb-1"><i class="fas fa- pr-1"></i></h6>
-          </a>
-
-          <h4 class="h4 mb-4"></h4>
-
-          <p class="font-weight-normal"></p>
-          <p class="font-weight-normal">by <a><strong></strong></a>, </p>
-
-          <a href="#" class="btn btn-success">Read more</a>
+      <!-- Content -->
+      <div class="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+        <div>
+          <h5 class="pink-text"><i class="fas fa-comments"></i>Connect Your Batchmates</h5>
+          <p>View Our Exclusive Batchmates Directory to know about whereabouts of your batchmates,Explore Complete Alumni Directory & connect with alumni with your Interests & Domain</p>
+          <a href="{% url 'group_view' %}" class="btn btn-pink"><i class="fas fa-users left"></i> Join With Your Batch</a>
         </div>
       </div>
+
     </div>
-</div>
+    <!-- Card -->
+    <br>
+  </div>
+  <div class="wow fadeIn">
+    <!-- Card -->
+    <div class="card card-image" style="background-image: url({% static 'img/help.jpeg' %});">
 
+      <!-- Content -->
+      <div class="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+        <div>
+          <h5 class="green-text"><i class="fas fa-chart-pie"></i> Contribute</h5>
+          <p>An institution's alumni are the reflection of its past, representation of its present and a link to its future.
+            A strong alumni association can be one of the biggest benefactors of an institution that can contribution towards various developmental activities of the institution.
+          </p>
+          <a class="btn btn-green"><i class="fas fa-clone left"></i> View projects and events that you can help </a>
+        </div>
+      </div>
 
+    </div>
+    <!-- Card -->
 
+    <br>
+  </div><!-- Card -->
+  <div class="wow fadeIn">
+    <div class="card card-image" style="background-image: url({% static 'img/job.jpeg' %});">
+
+      <!-- Content -->
+      <div class="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+        <div>
+          <h5 class="orange-text"><i class="fas fa-angle-double-up"></i> Upgrade Your Self</h5>
+          <p>Refer your friends to the many exciting job opportunities.
+            Refer a new student and give them a head start. No one knows Bethany better than our alumni.
+          </p>
+          <a class="btn btn-orange"><i class="fas fa-briefcase left"></i> Get Jobs and Opportunities or View Profiles</a>
+        </div>
+      </div>
+
+    </div>
+    <br>
+  </div>
+  <div class="wow fadeIn">
+    <div class="card card-image" style="background-image: url({% static 'img/mentor.jpeg' %});">
+
+      <!-- Content -->
+      <div class="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
+        <div>
+          <h5 class="blue-text"><i class="fas fa-info"></i> Mentor Upcoming Gradutes</h5>
+          <p>Alumni Mentor Program is a unique opportunity for you to form meaningful and lasting relationships with alumni that will extend beyond campus walls. As a program participant, you'll have a chance to request a mentor to assist you with
+            academic guidance, career advice and personal development.
+          </p>
+          <a class="btn btn-blue"><i class="fas fa-chalkboard-teacher left"></i> Organize Events and Share your experience</a>
+        </div>
+      </div>
+
+    </div>
 
   </div>
 
 
   <!--Section: Contact v.2-->
-  <section class="mb-4">
 
-      <!--Section heading-->
-      <h2 class="h1-responsive font-weight-bold text-center my-4">Reach us</h2>
-      <!--Section description-->
-      <p class="text-center w-responsive mx-auto mb-5">Do you have any questions? Please do not hesitate to contact us directly. Our team will come back to you within
-          a matter of hours to help you.</p>
-
-      <div id='contact' class="row">
-
-          <!--Grid column-->
-          <div class="col-md-9 mb-md-0 mb-5">
-              <form id="contact-form" name="contact-form" method="POST" novalidate>
-
-                {% csrf_token %}
-                {% include 'includes/form.html' %}
-                <button type="submit" class="btn btn-success">Send</button>
-                  <!--Grid row-->
-
-              </form>
-
-              <div class="text-center text-md-left">
-
-              </div>
-              <div class="status"></div>
-          </div>
-          <!--Grid column-->
-
-          <!--Grid column-->
-          <div class="col-md-3 text-center">
-              <ul class="list-unstyled mb-0">
-                  <li><i class="fas fa-map-marker-alt fa-2x"></i>
-                      <p>CUCEK , Alappuzha </p>
-                  </li>
-
-                  <li><i class="fas fa-phone mt-4 fa-2x"></i>
-                      <p>+ 91 *** *** ****</p>
-                  </li>
-
-                  <li><i class="fas fa-envelope mt-4 fa-2x"></i>
-                      <p>alumni@cucek.in</p>
-                  </li>
-              </ul>
-          </div>
-          <!--Grid column-->
-
-      </div>
-
-  </section>
 </div>
 
 
