@@ -30,6 +30,9 @@ height:100%;
 width:100%;
 position:absolute;
 }
+#navbarSupportedContent > ul.navbar-nav.nav-flex-icons {
+  flex-direction: row-reverse;
+}
   </style>
 </head>
 
@@ -98,6 +101,46 @@ position:absolute;
                  <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
                </div>
              </li>
+             <li class="nav-item dropdown">
+                <a class="nav-link  waves-effect" href="#" id="userDropdown" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-money-bill-alt"></i> <span class="clearfix d-none d-sm-inline-block">Fundraiser</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                  <a class="dropdown-item" href="{% url 'update_profile' %}">Update Account</a>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                 <a class="nav-link  waves-effect" href="#" id="userDropdown" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                   <i class="fas fa-table"></i> <span class="clearfix d-none d-sm-inline-block">Home</span>
+                 </a>
+                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                   <a class="dropdown-item" href="{% url 'update_profile' %}">Update Account</a>
+                   <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+                 </div>
+               </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link  waves-effect" href="#" id="userDropdown" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-map"></i> <span class="clearfix d-none d-sm-inline-block">Home</span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="{% url 'update_profile' %}">Update Account</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+                  </div>
+                </li>
+              <li class="nav-item dropdown">
+                 <a class="nav-link  waves-effect" href="#" id="userDropdown" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                   <i class="fas fa-chart-pie"></i> <span class="clearfix d-none d-sm-inline-block">Home</span>
+                 </a>
+                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                   <a class="dropdown-item" href="{% url 'update_profile' %}">Update Account</a>
+                   <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+                 </div>
+               </li>
           </ul>
 
         </div>
@@ -107,27 +150,28 @@ position:absolute;
     <!-- Navbar -->
 
     <!-- Sidebar -->
+
     <div class="sidebar-fixed position-fixed">
 
       <a class="logo-wrapper waves-effect">
         <img src="{% static 'img/author.png' %}" class="img-fluid" alt="">
         <br>
-        <span>Hi {{ alumni.user.username }}</span>
+        <span>Hi {{ request.user.username }}</span>
       </a>
 
       <div class="list-group list-group-flush">
-        <a href="{% url 'userview' %}" class="list-group-item active waves-effect">
+        <a href="{% url 'userview' %}" class="list-group-item{% if request.resolver_match.url_name == 'userview' %} active {% endif %}waves-effect">
           <i class="fas fa-chart-pie mr-3"></i>Dashboard
         </a>
         <a href="#" class="list-group-item list-group-item-action waves-effect">
           <i class="fas fa-user mr-3"></i>Profile</a>
-          {% if alumni.verify_status == True %}
+          {% if request.user.alumni.verify_status == True %}
         <a href="#" class="list-group-item list-group-item-action waves-effect">
           <i class="fas fa-table mr-3"></i>Forums</a>
         <a href="#" class="list-group-item list-group-item-action waves-effect">
           <i class="fas fa-map mr-3"></i>Jobs</a>
-        <a href="#" class="list-group-item list-group-item-action waves-effect">
-          <i class="fas fa-money-bill-alt mr-3"></i>Fund requests</a>
+        <a href="{% url 'fundraiser' %}" class="list-group-item list-group-item-action{% if request.resolver_match.url_name == 'fundraiser' %} active {% endif %}waves-effect">
+          <i class="fas fa-money-bill-alt mr-3"></i>Fundraiser</a>
       </div>
       {% endif %}
 

@@ -20,6 +20,7 @@ from account.views import alumni
 from home import views as home_views
 
 from community import views as community_views
+from fundraiser import views as fund_views
 
 
 urlpatterns = [
@@ -52,6 +53,10 @@ urlpatterns = [
     path('profile/update/phone', alumni.send_sms, name = 'send_sms'),
     path('verification/token/', alumni.sms_token_validation, name='sms_token_validation'),  # noqa: E501
     path('profile/update/account', alumni.update_profile, name='update_profile'),
+    path('fundraiser/',fund_views.home,name='fundraiser'),
+    path('contribute/response/', fund_views.response),
+    path('contribute/pay/<eventid>/',fund_views.Amount, name='contribute_event'),
+    path('contribute/<eventid>/<orderid>/<amount>/',fund_views.payment,name='payment'),
     path('connect/sso', community_views.sso),
     path('connect/batchs/', community_views.alumniBatchGroups, name='group_view'),
     path('', home_views.homeviews, name='home'),

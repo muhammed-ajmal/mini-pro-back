@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     #Apps
+    'fundraiser',
     'community',
     'account',
     'userdb',
@@ -215,5 +216,16 @@ DISCOURSE_BASE_URL = config('DISCOURSE_BASE_URL')
 DISCOURSE_SSO_SECRET = config('DISCOURSE_SSO_SECRET')
 DISCOURSE_API = config('DISCOURSE_API')
 
+PAYTM_MERCHANT_ID = config('PAYTM_MERCHANT_ID')
+PAYTM_SECRET_KEY = config('PAYTM_SECRET_KEY')
+PAYTM_WEBSITE = config('PAYTM_WEBSITE')
+PAYTM_CHANNEL_ID = config('PAYTM_CHANNEL_ID')
+PAYTM_INDUSTRY_TYPE_ID = config('PAYTM_INDUSTRY_TYPE_ID')
+PAYTM_COMPANY_NAME = config('PAYTM_COMPANY_NAME') #For representation purposes
+PAYTM_MERCHANT_KEY = config('PAYTM_MERCHANT_KEY')
+PAYTM_MERCHANT_ID = config('PAYTM_MERCHANT_ID')
+PAYTM_CALLBACK_URL = config('PAYTM_CALLBACK_URL')# Hardcode
+PAYTM_PAYMENT_GATEWAY_URL = config('PAYTM_PAYMENT_GATEWAY_URL')
+PAYTM_TRANSACTION_STATUS_URL = config('PAYTM_TRANSACTION_STATUS_URL')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())

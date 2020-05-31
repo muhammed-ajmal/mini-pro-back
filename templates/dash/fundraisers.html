@@ -1,0 +1,45 @@
+{% extends 'dash/dashbase.html' %}
+{% block dashtitle %}Home {% endblock %}
+{% block body %}
+<!--Grid column-->
+
+{% if request.user.alumni.verify_status == True %}
+
+<div class="row">
+  {% for event in events %}
+    <div class="col-sm-6" style="padding-bottom:15px;">
+        <div class="card bg-white">
+            <div class="card-body">
+                <h5 class="card-title">{{ event.event_name }}</h5>
+                <p class="card-text">{{ event.description }}</p>
+                <div class="progress md-progress" style="height: 20px">
+    <div class="progress-bar" role="progressbar" style="width: {{event.percentage}}%; height: 20px" aria-valuenow="{{ event.raised_amount }}" aria-valuemin="0" aria-valuemax="{{event.target_amount}}"> ₹{{ event.raised_amount }}</div>
+</div><div class="text-muted" style="text-align:right;">₹{{ event.target_amount }}</div>
+recent contributions
+<ul class="list-group">
+{% for txn in txns|slice:":3" %}
+
+{% if txn.event == event %}
+
+  <li class="list-group-item">{{ txn.made_by.username }} - from {{txn.made_by.alumni.department}}:{{txn.made_by.alumni.batch}}</li>
+  {% endif %}
+
+
+{% endfor %}
+</ul>
+{% if event.percentage != 100 %}
+<a href="{% url 'contribute_event' event.id %}" class="btn btn-primary">Make your contribution</a>
+{% else %}
+<a href="{% url 'contribute_event' event.id %}" class="btn btn-primary">Know More</a>
+{% endif %}
+            </div>
+        </div>
+    </div>
+
+
+{% endfor %}
+</div>
+<!-- Card -->
+  <!--/.Card-->
+{% endif %}
+{% endblock %}

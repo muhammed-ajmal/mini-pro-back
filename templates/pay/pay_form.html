@@ -1,0 +1,82 @@
+{% extends 'base_accounts.html' %}
+
+{% block title %}Contribute{% endblock %}
+
+
+{% block head %}  <a href="{% url 'fundraiser' %}">{{ event.event_name}}</a> {% endblock %}
+{% block content %}
+
+
+<div class="row justify-content-center">
+  <div class="col-lg-8 col-md-10 col-sm-12" style="padding-bottom:15px;">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">About {{ event.event_name}}</h3>
+
+<p>{{ event.description}}</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8 col-md-10 col-sm-12" style="padding-bottom:15px;">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Contribute</h3>
+{% if event.percentage < 100 %}
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% include 'includes/form.html' %}
+
+          {% if messages %}
+              {% for message in messages %}
+                <div class="card">
+                {{  message }}
+                  </div>
+                  <br>
+              {% endfor %}
+          {% endif %}
+          <button type="submit" class="btn btn-primary btn-block">Pay</button>
+        </form>
+      {% else %}
+      <p> Thanks for your support we got the target amount</p>
+{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8 col-md-10 col-sm-12" style="padding-bottom:15px;">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Recent contributions</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Name</th>
+      <th scope="col">Batch</th>
+      <th scope="col">Department</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for txn in txns %}
+    <tr>
+      <th scope="row">{{ txn.made_on }}</th>
+      <td>{{ txn.made_by.username }}</td>
+      <td>{{ txn.made_by.alumni.batch}}</td>
+      <td>{{ txn.made_by.alumni.department }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
