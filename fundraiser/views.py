@@ -19,6 +19,7 @@ from .utils import VerifyPaytmResponse
 import requests
 from .forms import AmountForm
 
+from django.contrib import messages
 
 
 def payment(request,eventid,orderid,amount):
@@ -74,11 +75,12 @@ def response(request):
         fund_event.raised_amount = fund_event.raised_amount + txn.amount
         fund_event.percentage = (fund_event.raised_amount / fund_event.target_amount) * 100
         fund_event.save()
-        return HttpResponse("<center><h1>Transaction Successful</h1><center>", status=200)
+        messages.success(request, 'successfull transaction')
+        return redirect('fundraiser')
     else:
         # check what happened; details in resp['paytm']
-
-        return HttpResponse("<center><h1>Transaction Failed</h1><center>", status=400)
+        messages.success(request, 'failed transaction')
+        return redirect('fundraiser')
 
 
 def home(request):
