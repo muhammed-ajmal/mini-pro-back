@@ -28,8 +28,8 @@ class Transaction(models.Model):
                                 on_delete=models.SET_NULL,null=True)
     made_on = models.DateTimeField(auto_now_add=True)
     amount = models.IntegerField()
-    order_id = models.CharField(unique=True, max_length=100, null=True, blank=True)
-    checksum = models.CharField(max_length=100, null=True, blank=True)
+    order_id = models.CharField(unique=True, max_length=1000, null=True, blank=True)
+    checksum = models.CharField(max_length=1000, null=True, blank=True)
     txn_status = models.CharField(max_length=8,choices=STATUS,default='init')
 
     def save(self, *args, **kwargs):
