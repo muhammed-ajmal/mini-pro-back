@@ -110,6 +110,8 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
+
 ROOT_URLCONF = 'alumni.urls'
 
 TEMPLATES = [
