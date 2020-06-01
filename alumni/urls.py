@@ -25,6 +25,7 @@ from fundraiser import views as fund_views
 
 urlpatterns = [
     path('admin/', admin.site.urls,),
+    path('api/', include('api.urls')),
     path('signup/', alumni.AlumniSignUpView.as_view(), name='signup'),
     path('signup/add/batch',alumni.AddBatchView.as_view(), name = 'add_batch'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
