@@ -9,7 +9,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.decorators import authentication_classes, permission_classes
 
-from api.serializers import CreateUserSerializer, ActivateAccount
+from api.serializers import CreateUserSerializer, ActivateAccount,AccountBatchSerializer
 from account.models import Alumni,User,AlumniDB,CourseCompletion,AlumniProfile
 
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
