@@ -5,7 +5,7 @@ from django.forms.utils import ValidationError
 from .utils import OptionalChoiceField
 from .choices import BRANCH , YEARSSTART, yearsend
 from django.core.validators import RegexValidator
-from account.models import (Alumni,CourseCompletion,User)
+from account.models import (Alumni,CourseCompletion,User,AlumniProfile)
 from userdb.models import AlumniDB
 
 from django.utils.safestring import mark_safe
