@@ -79,7 +79,7 @@ def response(request):
         return redirect('fundraiser')
     else:
         # check what happened; details in resp['paytm']
-        messages.success(request, 'failed transaction')
+        messages.warning(request, 'failed transaction')
         return redirect('fundraiser')
 
 

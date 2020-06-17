@@ -119,3 +119,7 @@ class AccountActivationPhoneForm(forms.Form):
 
 class TokenForm(forms.Form):
     token = forms.CharField(max_length=6)
+
+class AlumniProfile(forms.ModelForm):
+    class Meta:
+        model = AlumniProfile
