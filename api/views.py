@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
+from rest_framework.decorators import authentication_classes, permission_classes
 
 from api.serializers import CreateUserSerializer, ActivateAccount
 from account.models import Alumni,User,AlumniDB,CourseCompletion,AlumniProfile
@@ -78,6 +79,8 @@ class ActivateAccount(CreateAPIView):
         return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
 def account_batch(request):
     if request.method == 'GET':
         batchs = CourseCompletion.objects.all()
