@@ -6,6 +6,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import viewsets
+from rest_framework.decorators import api_view
 
 from api.serializers import CreateUserSerializer, ActivateAccount
 from account.models import Alumni,User,AlumniDB,CourseCompletion,AlumniProfile
@@ -75,3 +76,10 @@ class ActivateAccount(CreateAPIView):
         print(request.data)
         content = {'message': 'Hello, World!'}
         return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+def account_batch(request):
+    if request.method == 'GET':
+        batchs = CourseCompletion.objects.all()
+        serializer = AccountBatchSerializer(batchs, many=True)
+        return Response(serializer.data)

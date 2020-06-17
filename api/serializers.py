@@ -54,3 +54,11 @@ class ActivateAccount(serializers.Serializer):
 
     def save(self):
         email = self.validated_data['email']
+
+class AccountBatchSerializer(serializers.ModelSerializer):
+    batch = serializers.SerializerMethodField()
+    def get_batch(self, obj):
+        return '{}-{}'.format(obj.start.year, obj.end.year)
+    class Meta:
+        model = CourseCompletion
+        fields = ('id','batch')
