@@ -84,9 +84,7 @@ class ActivateAccount(CreateAPIView):
             pass
         elif user.is_active == False :
             sendmail(request,user)
-            print('send message')
-        print(request.data)
-        content = {'message': 'Hello, World!'}
+        content = {'message': 'If your mail id matches with our records and Your account is not activated,then you will recieve a mail asap!'}
         return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
