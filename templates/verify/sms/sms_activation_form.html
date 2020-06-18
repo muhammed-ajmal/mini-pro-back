@@ -1,0 +1,32 @@
+{% extends 'base_accounts.html' %}
+
+{% block title %}Verify Account{% endblock %}
+
+
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8 col-md-10 col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Verify Your Account</h3>
+
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% include 'includes/form.html' %}
+
+          {% if messages %}
+              {% for message in messages %}
+                <div class="card">
+                {{  message }}
+                  </div>
+                  <br>
+              {% endfor %}
+          {% endif %}
+          <button type="submit" class="btn btn-primary btn-block">Send SMS</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

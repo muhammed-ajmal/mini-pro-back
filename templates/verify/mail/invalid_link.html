@@ -1,0 +1,18 @@
+{% extends 'base_accounts.html' %}
+
+{% block title %}Invalid Link{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 col-sm-8">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Confirm Your Account</h3>
+          <p>Activation link is invalid!
+          </p>
+          <a href="{% url 'reactivate' %}" class="btn btn-secondary btn-block">Re-send mail</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
