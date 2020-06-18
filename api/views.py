@@ -23,6 +23,10 @@ from rest_framework.decorators import authentication_classes, permission_classes
 import json
 from account.choices import BRANCH , YEARSSTART, yearsend, BRANCH_JSON
 
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
+resetpassword = PasswordResetTokenGenerator()
+
 class ObtainAuthToken(ObtainAuthToken):
     serializer_class = AuthTokenSerializer
 
@@ -84,6 +88,52 @@ class ActivateAccount(CreateAPIView):
             pass
         elif user.is_active == False :
             sendmail(request,user)
+        content = {'message': 'If your mail id matches with our records and Your account is not activated,then you will recieve a mail asap!'}
+        return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
+
+
+class ResetAccountPassword(CreateAPIView):
+    serializer_class =ActivateAccount
+    permission_classes = [AllowAny]
+
+    def post(self,request, *args, **kwargs):
+        serializer= self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            user = User.objects.get(email=serializer.data['email'])
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user == None :
+            pass
+        else:
+            token = resetpassword.make_token(user)
+            template = 'verify/mail/reset_account_password_mail.html'
+            email_subject = 'Reset Your Alumni Acc. Password'
+            sendmail(self,request,user,template,token,email_subject)
+            print('send message')
+        print(request.data)
+        content = {'message': 'Hello, World!'}
+        return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
+class ActivateAccount(CreateAPIView):
+    serializer_class =ActivateAccount
+    permission_classes = [AllowAny]
+
+    def post(self,request, *args, **kwargs):
+        serializer= self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            user = User.objects.get(email=serializer.data['email'])
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user == None :
+            pass
+        elif user.is_active == False :
+            token = account_activation_token.make_token(user)
+            template = 'verify/mail/activate_account_mail.html'
+            email_subject = 'Activate Your Acc'
+            sendmail(self,request,user,template,token,email_subject)
+            print('send message')
+        print(request.data)
         content = {'message': 'If your mail id matches with our records and Your account is not activated,then you will recieve a mail asap!'}
         return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
 
