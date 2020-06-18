@@ -18,6 +18,8 @@ from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
 from account.token_generator import account_activation_token
 from django.core.mail import EmailMessage
+from account.choices import BRANCH , YEARSSTART, yearsend
+
 
 def sendmail(request,user):
     current_site = get_current_site(request)
@@ -86,3 +88,10 @@ def account_batch(request):
         batchs = CourseCompletion.objects.all()
         serializer = AccountBatchSerializer(batchs, many=True)
         return Response(serializer.data)
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def account_department(request):
+    if request.method == 'GET':
+        return Response(BRANCH)

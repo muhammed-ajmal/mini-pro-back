@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import CreateUserAPIView, LogoutUserAPIView,account_batch
+from .views import CreateUserAPIView, LogoutUserAPIView,account_batch, account_department
 
 
 urlpatterns = [
@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^auth/logout/$',
         LogoutUserAPIView.as_view(),
         name='auth_user_logout'),
-    url(r'^auth/account/get/batches/$', account_batch)
+    url(r'^auth/account/get/batches/$', account_batch),
+    url(r'^auth/account/get/departments/$', account_department)
 ]
