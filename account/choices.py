@@ -15,7 +15,9 @@ YEARSSTART= [x for x in range(1990,year-2)]
 def yearsend(startyear):
     YEARSEND = [int(startyear)+4,]
     return YEARSEND
-    
+
 BRANCH_JSON= []
-for i in BRANCH :
+BRANCH_WITHOUT_ND = BRANCH
+BRANCH_WITHOUT_ND.pop(0)
+for i in BRANCH_WITHOUT_ND :
  BRANCH_JSON.append({"id":i[0],"branch":i[1]})
