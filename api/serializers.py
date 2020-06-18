@@ -6,7 +6,35 @@ from account.utils import OptionalChoiceField
 from django.core.validators import RegexValidator
 import django.contrib.auth.password_validation as validators
 from django.core import exceptions
+from django.db.models.fields import DateField
 from datetime import datetime
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from django.contrib.auth import authenticate
+from django.utils.translation import gettext_lazy as _
+
+class AuthTokenSerializer(AuthTokenSerializer):
+    def validate(self, attrs):
+        username = attrs.get('username')
+        password = attrs.get('password')
+
+        if username and password:
+            user = authenticate(request=self.context.get('request'),
+                                username=username, password=password)
+            if not user.is_active:
+                msg ={'notactivated':'Either activate or request for new account activation link.'}
+                raise serializers.ValidationError(msg, code='authorization')
+            # The authenticate call simply returns None for is_active=False
+            # users. (Assuming the default ModelBackend authentication
+            # backend.)
+            if not user:
+                msg = _('Unable to log in with provided credentials.')
+                raise serializers.ValidationError(msg, code='authorization')
+        else:
+            msg = _('Must include "username" and "password".')
+            raise serializers.ValidationError(msg, code='authorization')
+
+        attrs['user'] = user
+        return attrs
 
 
 class AlumniUserSerializer(serializers.ModelSerializer):

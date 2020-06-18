@@ -3,13 +3,14 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
-from rest_framework.decorators import authentication_classes, permission_classes
 
-from api.serializers import CreateUserSerializer, ActivateAccount,AccountBatchSerializer, AccountBatchCreate
+
+from api.serializers import CreateUserSerializer, ActivateAccount, AccountBatchSerializer,AccountBatchCreate,AuthTokenSerializer
 from account.models import Alumni,User,AlumniDB,CourseCompletion,AlumniProfile
 
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -18,8 +19,12 @@ from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
 from account.token_generator import account_activation_token
 from django.core.mail import EmailMessage
+from rest_framework.decorators import authentication_classes, permission_classes
+import json
 from account.choices import BRANCH , YEARSSTART, yearsend
 
+class ObtainAuthToken(ObtainAuthToken):
+    serializer_class = AuthTokenSerializer
 
 def sendmail(request,user):
     current_site = get_current_site(request)
@@ -99,3 +104,5 @@ def account_batch(request):
 def account_department(request):
     if request.method == 'GET':
         return Response(BRANCH)
+
+obtain_auth_token = ObtainAuthToken.as_view()

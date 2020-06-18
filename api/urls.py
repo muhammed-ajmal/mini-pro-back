@@ -1,6 +1,5 @@
 from django.conf.urls import url
-from rest_framework.authtoken.views import obtain_auth_token
-from .views import CreateUserAPIView, LogoutUserAPIView,account_batch, account_department,CreateAccountBatchAPIView
+from .views import CreateUserAPIView, LogoutUserAPIView,account_batch, account_department,CreateAccountBatchAPIView,obtain_auth_token
 
 
 urlpatterns = [
