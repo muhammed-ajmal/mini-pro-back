@@ -74,22 +74,6 @@ class LogoutUserAPIView(APIView):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
 
-class ActivateAccount(CreateAPIView):
-    serializer_class =ActivateAccount
-    permission_classes = [AllowAny]
-    def post(self,request, *args, **kwargs):
-        serializer= self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        try:
-            user = User.objects.get(email=serializer.data['email'])
-        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
-        if user == None :
-            pass
-        elif user.is_active == False :
-            sendmail(request,user)
-        content = {'message': 'If your mail id matches with our records and Your account is not activated,then you will recieve a mail asap!'}
-        return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
 
 
 class ResetAccountPassword(CreateAPIView):
@@ -111,9 +95,9 @@ class ResetAccountPassword(CreateAPIView):
             email_subject = 'Reset Your Alumni Acc. Password'
             sendmail(self,request,user,template,token,email_subject)
             print('send message')
-        print(request.data)
         content = {'message': 'Hello, World!'}
         return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
+
 class ActivateAccount(CreateAPIView):
     serializer_class =ActivateAccount
     permission_classes = [AllowAny]
@@ -133,7 +117,7 @@ class ActivateAccount(CreateAPIView):
             email_subject = 'Activate Your Acc'
             sendmail(self,request,user,template,token,email_subject)
             print('send message')
-        print(request.data)
+
         content = {'message': 'If your mail id matches with our records and Your account is not activated,then you will recieve a mail asap!'}
         return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
 

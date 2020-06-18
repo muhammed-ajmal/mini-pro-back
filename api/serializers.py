@@ -82,7 +82,6 @@ class CreateUserSerializer(serializers.HyperlinkedModelSerializer):
 
 class ActivateAccount(serializers.Serializer):
     email = serializers.EmailField()
-
     def save(self):
         email = self.validated_data['email']
 
