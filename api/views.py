@@ -21,7 +21,7 @@ from account.token_generator import account_activation_token
 from django.core.mail import EmailMessage
 from rest_framework.decorators import authentication_classes, permission_classes
 import json
-from account.choices import BRANCH , YEARSSTART, yearsend
+from account.choices import BRANCH , YEARSSTART, yearsend, BRANCH_JSON
 
 class ObtainAuthToken(ObtainAuthToken):
     serializer_class = AuthTokenSerializer
@@ -103,6 +103,6 @@ def account_batch(request):
 @permission_classes([])
 def account_department(request):
     if request.method == 'GET':
-        return Response(BRANCH)
+        return Response(BRANCH_JSON)
 
 obtain_auth_token = ObtainAuthToken.as_view()
