@@ -6,6 +6,8 @@ from account.utils import OptionalChoiceField
 from django.core.validators import RegexValidator
 import django.contrib.auth.password_validation as validators
 from django.core import exceptions
+from datetime import datetime
+
 
 class AlumniUserSerializer(serializers.ModelSerializer):
 
@@ -54,6 +56,29 @@ class ActivateAccount(serializers.Serializer):
 
     def save(self):
         email = self.validated_data['email']
+
+class AccountBatchCreate(serializers.ModelSerializer):
+    start = serializers.DateField(required=True)
+    end = serializers.DateField(required=True)
+    class Meta:
+        model = CourseCompletion
+        fields = ('start', 'end')
+    def validate(self,data):
+        if data['start'].year > datetime.now().year-4:
+            raise serializers.ValidationError({
+     'start': 'Only for Alumnis',
+     })
+        duration = data['end'].year - data['start'].year
+        if duration < 0 or duration != 4:
+            raise serializers.ValidationError({
+    'end': 'Period Must Be 4 Years',
+    })
+        if CourseCompletion.objects.filter(start__year=data['start'].year).exists():
+            raise serializers.ValidationError({
+    'start': 'Your Batch Already Exists',
+    'end': 'GoBack and Continue to signup',
+    })
+        return data
 
 class AccountBatchSerializer(serializers.ModelSerializer):
     batch = serializers.SerializerMethodField()
