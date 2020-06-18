@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^auth/logout/$',
         LogoutUserAPIView.as_view(),
         name='auth_user_logout'),
-    url(r'^auth/account/create/batchs/$',CreateAccountBatchAPIView.as_view()),
+    url(r'^auth/account/create/batches/$',CreateAccountBatchAPIView.as_view()),
     url(r'^auth/account/get/batches/$', account_batch),
     url(r'^auth/account/get/departments/$', account_department)
 ]
