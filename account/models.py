@@ -51,9 +51,10 @@ class Alumni(models.Model):
     department = models.CharField(max_length=3,choices=BRANCH)
     batch = models.ForeignKey(CourseCompletion, on_delete=models.SET_NULL,null=True)
     contact_regex = RegexValidator(regex=r'^[0-9]{10}$', message="10 digits only ")
-    contact = models.CharField(validators=[contact_regex], max_length=10, blank=False, default='',help_text=' your registerd phone number with university if availabe ,your number help us to auto verify your profile')
+    contact = models.CharField(validators=[contact_regex], unique=True, max_length=10, blank=False, default='',help_text=' your registerd phone number with university if availabe ,your number help us to auto verify your profile')
     reg_date = models.DateTimeField(default=timezone.now)
     verify_status = models.BooleanField(default=False)
+
     class Meta:
         ordering = ['batch']
 
