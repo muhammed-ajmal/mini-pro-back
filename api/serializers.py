@@ -76,6 +76,8 @@ class CreateUserSerializer(serializers.HyperlinkedModelSerializer):
         alumni_user = validated_data.pop('alumni')
         user = super(CreateUserSerializer, self).create(validated_data)
         user.set_password(validated_data['password'])
+        user.is_alumni = True
+        user.is_active = False
         user.save()
         Alumni.objects.create(user=user, **alumni_user)
         return user

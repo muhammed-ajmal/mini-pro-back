@@ -53,10 +53,15 @@ class CreateUserAPIView(CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         # We create a token than will be used for future auth
-        token = Token.objects.create(user=serializer.instance)
-        token_data = {"token": token.key}
+        user=serializer.instance
+        token = account_activation_token.make_token(user)
+        template = 'verify/mail/activate_account_mail.html'
+        email_subject = 'Activate Your Acc'
+        sendmail(self,request,user,template,token,email_subject)
+        print('send message')
+        create_message = {"message": "Your account is created successfully now open the actvtn mail, which we already send and activate the account"}
         return Response(
-            {**serializer.data, **token_data},
+            {**serializer.data, **create_message},
             status=status.HTTP_201_CREATED,
             headers=headers
         )
