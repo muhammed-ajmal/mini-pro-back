@@ -30,15 +30,15 @@ resetpassword = PasswordResetTokenGenerator()
 class ObtainAuthToken(ObtainAuthToken):
     serializer_class = AuthTokenSerializer
 
-def sendmail(request,user):
+def sendmail(self,request,user,template,token,email_subject):
     current_site = get_current_site(request)
-    email_subject = 'Activate Your Acc'
-    message = render_to_string('verify/mail/activate_account_mail.html', {
+    message = render_to_string(template, {
     'user': user,
     'domain': current_site.domain,
     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-    'token': account_activation_token.make_token(user),
+    'token': token,
     })
+    #'token': account_activation_token.make_token(user),
     to_email = user.email
     email = EmailMessage(email_subject, message, to=[to_email],from_email='alumni@cucek.in')
     email.send()
