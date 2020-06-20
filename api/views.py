@@ -95,7 +95,7 @@ class ResetAccountPassword(CreateAPIView):
             email_subject = 'Reset Your Alumni Acc. Password'
             sendmail(self,request,user,template,token,email_subject)
             print('send message')
-        content = {'message': 'Hello, World!'}
+        content = {'message': 'if you are a registerd user, then you will recieve a mail with password reset link in few minutes!'}
         return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
 
 class ActivateAccount(CreateAPIView):
