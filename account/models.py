@@ -8,6 +8,7 @@ from userdb.models import AlumniDB
 from account.choices import BRANCH ,VERIF_STATUS#choice file
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
+import os
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
