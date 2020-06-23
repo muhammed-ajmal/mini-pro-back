@@ -152,3 +152,18 @@ class SMSVerificationSerializer(serializers.Serializer):
         return data
     def save(self):
         token = self.validated_data['token']
+
+class VerifySMSTokenSerializer(serializers.Serializer):
+    token = serializers.CharField()
+    sms_token = serializers.CharField()
+    def get_user(self,data):
+        token = data['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        return key
+    def validate(self,data):
+        user = self.get_user(data).user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        return data
+    def save(self):
+        token = self.validated_data['token']
+        sms_token = self.validated_data['sms_token']

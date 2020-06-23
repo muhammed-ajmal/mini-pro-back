@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 from api.serializers import CreateUserSerializer, ActivateAccount, AccountBatchSerializer,AccountBatchCreate,AuthTokenSerializer,ManuelVerificationSerializers
 from account.models import Alumni,User,AlumniDB,CourseCompletion,AlumniProfile,ManuelVerification
-from api.serializers import SMSVerificationSerializer
+from api.serializers import SMSVerificationSerializer,VerifySMSTokenSerializer
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
@@ -180,6 +180,38 @@ class SMSVerifyAccount(CreateAPIView):
         content = {'message': 'sms has been send!'}
         return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
 
+class SMSVerifyToken(CreateAPIView):
+    serializer_class =VerifySMSTokenSerializer
+    permission_classes = [AllowAny]
+
+    def post(self,request, *args, **kwargs):
+        serializer= self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        token = request.data['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        user = key.user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        verification = authy_api.phones.verification_check(
+                alumni.contact,
+                '+91',
+                request.data['sms_token']
+            )
+        if verification.ok():
+            if AlumniDB.objects.filter(contact=alumni.contact).exists():
+                alumni.verify_status = True
+                alumni.save()
+                message = {
+                 'status': 'verified'
+                }
+            else:
+                message = {
+             'status': 'notverified'
+             }
+        else:
+            message = {
+                'status': 'failed'
+            }
+        return Response({**serializer.data, **message},status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
 @authentication_classes([])
