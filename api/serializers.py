@@ -109,8 +109,6 @@ class ManuelVerificationSerializers(serializers.ModelSerializer):
     def save(self):
         token = self.validated_data['token']
         verification_file = self.validated_data['verification_file']
-
-
 class AccountBatchCreate(serializers.ModelSerializer):
     start = serializers.DateField(required=True)
     end = serializers.DateField(required=True)

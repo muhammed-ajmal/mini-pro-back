@@ -156,6 +156,33 @@ class ActivateAccount(CreateAPIView):
         content = {'message': 'If your mail id matches with our records and Your account is not activated,then you will recieve a mail asap!'}
         return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
 
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def get_userdetails(request,token):
+    if request.method == 'GET':
+        key = get_object_or_404(Token.objects.all(), key=token)
+        user = key.user
+        if user.is_alumni:
+            alumni = get_object_or_404(Alumni.objects.all(), user=user)
+            message = {
+                "is_alumni" : user.is_alumni,
+                "is_student" : user.is_student,
+                "is_admin": user.is_admin,
+                "verify_status": alumni.verify_status
+            }
+        else:
+            message = {
+                "username" : user.username,
+                "is_alumni" : user.is_alumni,
+                "is_student" : user.is_student,
+                "is_admin": user.is_admin
+            }
+        return Response(message)
+
+        
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([])
