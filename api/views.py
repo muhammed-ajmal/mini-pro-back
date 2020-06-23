@@ -168,6 +168,7 @@ def get_userdetails(request,token):
         if user.is_alumni:
             alumni = get_object_or_404(Alumni.objects.all(), user=user)
             message = {
+            "username" : user.username,
                 "is_alumni" : user.is_alumni,
                 "is_student" : user.is_student,
                 "is_admin": user.is_admin,
@@ -182,7 +183,7 @@ def get_userdetails(request,token):
             }
         return Response(message)
 
-        
+
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([])
