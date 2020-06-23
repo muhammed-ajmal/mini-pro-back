@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 from api.serializers import CreateUserSerializer, ActivateAccount, AccountBatchSerializer,AccountBatchCreate,AuthTokenSerializer,ManuelVerificationSerializers
 from account.models import Alumni,User,AlumniDB,CourseCompletion,AlumniProfile,ManuelVerification
-
+from api.serializers import SMSVerificationSerializer
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
@@ -25,6 +25,11 @@ import json
 from account.choices import BRANCH , YEARSSTART, yearsend,BRANCH_JSON
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
+
+from django.conf import settings
+from authy.api import AuthyApiClient
+authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
 resetpassword = PasswordResetTokenGenerator()
 
@@ -156,6 +161,24 @@ class ActivateAccount(CreateAPIView):
         content = {'message': 'If your mail id matches with our records and Your account is not activated,then you will recieve a mail asap!'}
         return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
 
+class SMSVerifyAccount(CreateAPIView):
+    serializer_class =SMSVerificationSerializer
+    permission_classes = [AllowAny]
+
+    def post(self,request, *args, **kwargs):
+        serializer= self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        token = request.data['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        user = key.user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        authy_api.phones.verification_start(
+                alumni.contact,
+                '+91',
+                via='sms'
+            )
+        content = {'message': 'sms has been send!'}
+        return Response({**serializer.data, **content},status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET'])

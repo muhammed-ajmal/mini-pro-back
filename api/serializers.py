@@ -139,3 +139,16 @@ class AccountBatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseCompletion
         fields = ('id','batch')
+
+class SMSVerificationSerializer(serializers.Serializer):
+    token = serializers.CharField()
+    def get_user(self,data):
+        token = data['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        return key
+    def validate(self,data):
+        user = self.get_user(data).user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        return data
+    def save(self):
+        token = self.validated_data['token']

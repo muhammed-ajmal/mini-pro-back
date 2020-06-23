@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from .views import CreateUserAPIView, LogoutUserAPIView,account_batch, account_department,CreateAccountBatchAPIView,obtain_auth_token
 from .views import ActivateAccount,ResetAccountPassword, ManuelVerificationAPIView,get_userdetails
-
+from .views import SMSVerifyAccount
 urlpatterns = [
     url(r'^auth/login/$',
         obtain_auth_token,
@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^auth/account/get/batches/$', account_batch),
     url(r'^auth/account/get/departments/$', account_department),
     url(r'^auth/account/get/usertype/(?P<token>[\w.@+-]+)/$',get_userdetails),
-    url(r'^auth/account/verify/alumni/manuel/$', ManuelVerificationAPIView.as_view())
+    url(r'^auth/account/verify/alumni/manuel/$', ManuelVerificationAPIView.as_view()),
+    url(r'^auth/account/verify/alumni/sms/$', SMSVerifyAccount.as_view())
 
 ]
