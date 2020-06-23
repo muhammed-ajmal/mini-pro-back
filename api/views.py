@@ -8,10 +8,11 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
-
-
-from api.serializers import CreateUserSerializer, ActivateAccount, AccountBatchSerializer,AccountBatchCreate,AuthTokenSerializer
-from account.models import Alumni,User,AlumniDB,CourseCompletion,AlumniProfile
+from django.contrib.auth.tokens import default_token_generator
+from django.shortcuts import get_object_or_404
+from rest_framework.parsers import MultiPartParser, FormParser
+from api.serializers import CreateUserSerializer, ActivateAccount, AccountBatchSerializer,AccountBatchCreate,AuthTokenSerializer,ManuelVerificationSerializers
+from account.models import Alumni,User,AlumniDB,CourseCompletion,AlumniProfile,ManuelVerification
 
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
@@ -21,7 +22,7 @@ from account.token_generator import account_activation_token
 from django.core.mail import EmailMessage
 from rest_framework.decorators import authentication_classes, permission_classes
 import json
-from account.choices import BRANCH , YEARSSTART, yearsend, BRANCH_JSON
+from account.choices import BRANCH , YEARSSTART, yearsend,BRANCH_JSON
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
@@ -71,6 +72,35 @@ class CreateAccountBatchAPIView(CreateAPIView):
     permission_classes = [AllowAny]
 
 
+
+class ManuelVerificationAPIView(CreateAPIView):
+    serializer_class = ManuelVerificationSerializers
+    permission_classes = [AllowAny]
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self,request,*args,**kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        token = request.data['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        user = key.user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        if ManuelVerification.objects.filter(alumni=alumni,verify_status='ND').exists():
+            x = ManuelVerification.objects.get(alumni=alumni)
+            x.delete()
+        alumni.verification_file = request.data['verification_file']
+        alumni.save()
+        verify = ManuelVerification.objects.create(alumni=alumni,verify_status='PD')
+        message = {
+            "alumni" : verify.alumni.user.username,
+            "verify_status": verify.verify_status,
+            "request_date": verify.request_date,
+            "verification_file":alumni.verification_file.path
+        }
+        return Response(
+            {**serializer.data,**message},
+            status=status.HTTP_201_CREATED
+            )
 class LogoutUserAPIView(APIView):
     queryset = get_user_model().objects.all()
 

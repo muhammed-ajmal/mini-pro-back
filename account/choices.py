@@ -10,6 +10,12 @@ BRANCH = [
     ('MCA', 'Master of Computer App.'),
 ]
 
+VERIF_STATUS = [
+    ('PD', 'PENDING'),
+    ('ND', 'NOT VALID'),
+    ('VD','VERIFIED'),
+]
+
 year = date.today().year
 YEARSSTART= [x for x in range(1990,year-2)]
 def yearsend(startyear):

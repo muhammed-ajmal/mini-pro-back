@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from account.models import Alumni,User,AlumniDB,CourseCompletion,AlumniProfile
+from account.models import Alumni,User,AlumniDB,CourseCompletion,AlumniProfile,ManuelVerification
 from account.choices import BRANCH , YEARSSTART, yearsend
 from account.utils import OptionalChoiceField
 from django.core.validators import RegexValidator
@@ -11,6 +11,7 @@ from datetime import datetime
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
+from django.shortcuts import get_object_or_404
 
 class AuthTokenSerializer(AuthTokenSerializer):
     def validate(self, attrs):
@@ -86,6 +87,28 @@ class ActivateAccount(serializers.Serializer):
     email = serializers.EmailField()
     def save(self):
         email = self.validated_data['email']
+
+
+class ManuelVerificationSerializers(serializers.ModelSerializer):
+    token = serializers.CharField()
+    class Meta:
+        model = Alumni
+        fields = ('verification_file','token')
+
+    def get_user(self,data):
+        token = data['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        return key
+    def validate(self,data):
+        user = self.get_user(data).user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        if ManuelVerification.objects.filter(alumni=alumni,verify_status='PD').exists():
+            raise serializers.ValidationError({'token':"request already exists"})
+        return data
+    def save(self):
+        token = self.validated_data['token']
+        verification_file = self.validated_data['verification_file']
+
 
 class AccountBatchCreate(serializers.ModelSerializer):
     start = serializers.DateField(required=True)

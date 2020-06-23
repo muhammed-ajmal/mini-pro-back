@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 from django.utils import timezone
 from datetime import datetime
 from userdb.models import AlumniDB
-from account.choices import BRANCH #choice file
+from account.choices import BRANCH ,VERIF_STATUS#choice file
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
@@ -14,6 +14,11 @@ def user_directory_path(instance, filename):
     basefilename, file_extension= os.path.splitext(filename)
     timenow = timezone.now()
     return 'profile/{userid}/{basename}{time}{ext}'.format(userid=instance.user.id, basename=basefilename, time=timenow.strftime("%Y%m%d%H%M%S"), ext=file_extension)
+def file_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    basefilename, file_extension= os.path.splitext(filename)
+    timenow = timezone.now()
+    return 'profile/{userid}/verify/{basename}{time}{ext}'.format(userid=instance.user.id, basename=basefilename, time=timenow.strftime("%Y%m%d%H%M%S"), ext=file_extension)
 
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)
@@ -54,6 +59,7 @@ class Alumni(models.Model):
     contact = models.CharField(validators=[contact_regex], unique=True, max_length=10, blank=False, default='',help_text=' your registerd phone number with university if availabe ,your number help us to auto verify your profile')
     reg_date = models.DateTimeField(default=timezone.now)
     verify_status = models.BooleanField(default=False)
+    verification_file = models.ImageField(upload_to=file_directory_path, default='File.png',help_text="Verification ID")
 
     class Meta:
         ordering = ['batch']
@@ -75,6 +81,18 @@ class Alumni(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class ManuelVerification(models.Model):
+    alumni = models.OneToOneField(Alumni, on_delete=models.CASCADE, primary_key=True)
+    verify_status = models.CharField(max_length=2,choices=VERIF_STATUS)
+    #verification_file = models.ImageField(upload_to=user_directory_path, default=,help_text="Profile Picture")
+    request_date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name_plural = "Manuel Verifications"
+        ordering = ['-request_date']
+    def __str__(self):
+        return self.alumni.user.username
 
 class AlumniProfile(models.Model):
     alumni = models.OneToOneField(Alumni,on_delete=models.CASCADE,primary_key=True)
