@@ -214,6 +214,17 @@ class SMSVerifyToken(CreateAPIView):
         return Response({**serializer.data, **message},status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
+def get_userprofile(request):
+    if request.method == 'GET':
+        message = {
+                "username" : request.user.username,
+                "is_alumni" : request.user.is_alumni,
+                "is_student" : request.user.is_student,
+                "is_admin": request.user.is_admin
+            }
+        return Response(message)
+        
+@api_view(['GET'])
 @authentication_classes([])
 @permission_classes([])
 def get_userdetails(request,token):
