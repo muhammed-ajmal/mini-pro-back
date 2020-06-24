@@ -14,7 +14,7 @@ def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     basefilename, file_extension= os.path.splitext(filename)
     timenow = timezone.now()
-    return 'profile/{userid}/{basename}{time}{ext}'.format(userid=instance.user.id, basename=basefilename, time=timenow.strftime("%Y%m%d%H%M%S"), ext=file_extension)
+    return 'profile/{userid}/{basename}{time}{ext}'.format(userid=instance.alumni.user.id, basename=basefilename, time=timenow.strftime("%Y%m%d%H%M%S"), ext=file_extension)
 def file_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     basefilename, file_extension= os.path.splitext(filename)
