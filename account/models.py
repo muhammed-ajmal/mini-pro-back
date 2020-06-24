@@ -99,12 +99,13 @@ class AlumniProfile(models.Model):
     alumni = models.OneToOneField(Alumni,on_delete=models.CASCADE,primary_key=True)
     profile_pic = models.ImageField(upload_to=user_directory_path, default='profile.png',help_text="Profile Picture")
     bio = models.TextField(max_length=500, blank=True, default="ND")
-    work = models.CharField(max_length=30, blank=True, default="Student", help_text="eg:- Web Developer ,s/w Architect, s/m admin...etc")
-    organization = models.CharField(max_length=100, blank=True, default="ND")
+    skills = models.CharField(max_length=100, blank=True, default="Analytical Skill")
+    work = models.CharField(max_length=30, blank=True, default="Developer", help_text="eg:- Web Developer ,s/w Architect, s/m admin...etc")
+    organization = models.CharField(max_length=100, blank=True, default="XYZ Co")
     linkedin = models.URLField(max_length=200, blank=True, default="https://www.linkedin.com/in/username/")
     twitter = models.URLField(max_length=200, blank=True, default="https://twitter.com/username")
     facebook = models.URLField(max_length=200, blank=True, default="https://facebook.com/username")
-    private = models.BooleanField(default=False, help_text="<b>Make Your Profile Private</b>")
+    private = models.BooleanField(default=True, help_text="<b>Make Your Profile Private</b>")
 
     def __str__(self):
         return self.alumni.user.username

@@ -167,3 +167,31 @@ class VerifySMSTokenSerializer(serializers.Serializer):
     def save(self):
         token = self.validated_data['token']
         sms_token = self.validated_data['sms_token']
+
+
+class ProfileCreateOrUpdateSerializers(serializers.ModelSerializer):
+    #user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
+    token = serializers.CharField()
+    class Meta:
+        model = AlumniProfile
+        fields = ('profile_pic','bio', 'work','organization','skills','linkedin','twitter','facebook','private','token')
+
+    def get_user(self,data):
+        token = data['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        return key
+    def validate(self,data):
+        print(data)
+        user = self.get_user(data).user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        return data
+    def save(self):
+        profile_pic = self.validated_data['profile_pic']
+        bio = self.validated_data['bio']
+        work= self.validated_data['work']
+        organization= self.validated_data['organization']
+        skills= self.validated_data['skills']
+        linkedin= self.validated_data['linkedin']
+        twitter= self.validated_data['twitter']
+        facebook= self.validated_data['facebook']
+        private= self.validated_data['private']

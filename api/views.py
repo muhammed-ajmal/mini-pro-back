@@ -31,6 +31,8 @@ from django.conf import settings
 from authy.api import AuthyApiClient
 authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
+from api.serializers import ProfileCreateOrUpdateSerializers
+
 resetpassword = PasswordResetTokenGenerator()
 
 class ObtainAuthToken(ObtainAuthToken):
@@ -223,7 +225,7 @@ def get_userprofile(request):
                 "is_admin": request.user.is_admin
             }
         return Response(message)
-        
+
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([])
@@ -265,5 +267,73 @@ def account_batch(request):
 def account_department(request):
     if request.method == 'GET':
         return Response(BRANCH_JSON)
+
+
+
+class ProfileCreateOrUpdateAPIView(CreateAPIView):
+    serializer_class = ProfileCreateOrUpdateSerializers
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [AllowAny]
+    def post(self,request,*args,**kwargs):
+        serializer = self.get_serializer(data=request.data)
+        print(request.data)
+        serializer.is_valid(raise_exception=True)
+        token = request.data.pop('token')
+        key = get_object_or_404(Token.objects.all(), key=token[0])
+        user = key.user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        if AlumniProfile.objects.filter(alumni=alumni).exists():
+            profile = AlumniProfile.objects.get(alumni=alumni)
+            profile.profile_pic = request.data['profile_pic']
+            if 'skills' in request.data:
+                profile.skills = request.data['skills']
+            if 'bio' in request.data:
+                profile.bio = request.data['bio']
+            if 'work' in request.data:
+                profile.work = request.data['work']
+            if 'organization' in request.data:
+                profile.organization = request.data['organization']
+            if 'linkedin' in request.data:
+                profile.linkedin = request.data['linkedin']
+            if 'twitter' in request.data:
+                profile.twitter = request.data['twitter']
+            if 'facebook' in request.data:
+                profile.facebook = request.data['facebook']
+            if 'private' in request.data:
+                profile.private = request.data['private']
+            profile.save()
+            if 'csrfmiddlewaretoken' in request.data:
+                request.data.pop('csrfmiddlewaretoken')
+            request.data.pop('profile_pic')
+            message = {
+            "alumni":"updated"
+            }
+        else:
+            profile = AlumniProfile.objects.create(alumni=alumni)
+            profile.profile_pic = request.data['profile_pic']
+            if 'skills' in request.data:
+                profile.skills = request.data['skills']
+            if 'bio' in request.data:
+                profile.bio = request.data['bio']
+            if 'work' in request.data:
+                profile.work = request.data['work']
+            if 'organization' in request.data:
+                profile.organization = request.data['organization']
+            if 'linkedin' in request.data:
+                profile.linkedin = request.data['linkedin']
+            if 'twitter' in request.data:
+                profile.twitter = request.data['twitter']
+            if 'facebook' in request.data:
+                profile.facebook = request.data['facebook']
+            if 'private' in request.data:
+                profile.private = request.data['private']
+            profile.save()
+            message = {
+            "alumni":"created"
+            }
+        return Response(
+            {**serializer.data,**message},
+            status=status.HTTP_201_CREATED
+            )
 
 obtain_auth_token = ObtainAuthToken.as_view()

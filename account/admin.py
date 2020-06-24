@@ -19,7 +19,7 @@ class ManuelVerificationAdmin(admin.ModelAdmin):
     list_display = ('alumni','verification_file','verify_status','request_date')
     def verification_file(self,obj):
         return obj.alumni.verification_file
-        
+
 class AlumniProfileAdmin(admin.ModelAdmin):
     list_display = ('bio','work','organization','linkedin','twitter','facebook','private')
 
