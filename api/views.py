@@ -336,4 +336,39 @@ class ProfileCreateOrUpdateAPIView(CreateAPIView):
             status=status.HTTP_201_CREATED
             )
 
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def get_alumniprofile(request,token):
+    if request.method == 'GET':
+        key = get_object_or_404(Token.objects.all(), key=token)
+        user = key.user
+        if user.is_alumni:
+            current_site = get_current_site(request)
+            alumni = get_object_or_404(Alumni.objects.all(), user=user)
+            profile =get_object_or_404(AlumniProfile.objects.all(),alumni=alumni)
+            message = {
+                "username":user.username,
+                "first_name":user.first_name,
+                "last_name":user.last_name,
+                "profile_pic" : "https://" + current_site.domain + profile.profile_pic.url,
+                "bio" : profile.bio,
+                "work": profile.work,
+                "organization" : profile.organization,
+                "skills" : profile.skills,
+                "linkedin":profile.linkedin,
+                "twitter":profile.twitter,
+                "facebook":profile.facebook,
+                "private":profile.private
+            }
+        else:
+            message = {
+                "username" : user.username,
+                "is_alumni" : user.is_alumni,
+                "is_student" : user.is_student,
+                "is_admin": user.is_admin
+            }
+        return Response(message)
+
 obtain_auth_token = ObtainAuthToken.as_view()
