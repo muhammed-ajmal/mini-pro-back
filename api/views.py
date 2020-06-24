@@ -26,12 +26,15 @@ from account.choices import BRANCH , YEARSSTART, yearsend,BRANCH_JSON
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
+from django.db.models import Q
 
 from django.conf import settings
 from authy.api import AuthyApiClient
-authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
-from api.serializers import ProfileCreateOrUpdateSerializers
+from rest_framework import generics
+from api.serializers import ProfileCreateOrUpdateSerializers,UserSearchSerializer
+
+authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
 resetpassword = PasswordResetTokenGenerator()
 
@@ -372,5 +375,17 @@ def get_alumniprofile(request,token):
                 "is_admin": user.is_admin
             }
         return Response(message)
+
+
+class UserSearchList(generics.ListAPIView):
+    serializer_class = UserSearchSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        term = self.kwargs['term']
+        return User.objects.filter(Q(first_name__icontains = term) | Q(last_name__icontains = term) | Q(username__icontains = term))
 
 obtain_auth_token = ObtainAuthToken.as_view()

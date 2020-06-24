@@ -195,3 +195,32 @@ class ProfileCreateOrUpdateSerializers(serializers.ModelSerializer):
         twitter= self.validated_data['twitter']
         facebook= self.validated_data['facebook']
         private= self.validated_data['private']
+
+
+
+
+
+
+#view list
+
+
+class AlumniProfileUserSearchSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = AlumniProfile
+        fields = ('profile_pic', 'bio', 'work','organization','skills','linkedin','twitter','facebook','private')
+class CourseCompletionSerailzer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = CourseCompletion
+        fields = ('start','end')
+class AlumniUserSearchSerializer(serializers.HyperlinkedModelSerializer):
+    batch = CourseCompletionSerailzer()
+    alumniprofile = AlumniProfileUserSearchSerializer()
+    class Meta:
+        model = Alumni
+        fields = ('department','batch','alumniprofile')
+
+class UserSearchSerializer(serializers.ModelSerializer):
+    alumni = AlumniUserSearchSerializer()
+    class Meta:
+        model = User
+        fields = ('username','email','first_name','last_name','alumni')

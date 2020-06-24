@@ -2,7 +2,7 @@ from django.conf.urls import url
 from .views import CreateUserAPIView, LogoutUserAPIView,account_batch, account_department,CreateAccountBatchAPIView,obtain_auth_token
 from .views import ActivateAccount,ResetAccountPassword, ManuelVerificationAPIView,get_userdetails
 from .views import SMSVerifyAccount,SMSVerifyToken,get_userprofile,get_alumniprofile
-from .views import ProfileCreateOrUpdateAPIView
+from .views import ProfileCreateOrUpdateAPIView,UserSearchList
 
 urlpatterns = [
     url(r'^auth/login/$',
@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^auth/account/verify/alumni/sms/check/$', SMSVerifyToken.as_view()),
     url(r'^auth/get/data/$',get_userprofile),
     url(r'^profile/update/',ProfileCreateOrUpdateAPIView.as_view()),
-    url(r'^get/profile/(?P<token>[\w.@+-]+)/$',get_alumniprofile)
+    url(r'^get/profile/(?P<token>[\w.@+-]+)/$',get_alumniprofile),
+    url(r'^user/search/(?P<term>[\w.@+-]+)/$', UserSearchList.as_view())
 ]
