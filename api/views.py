@@ -347,7 +347,9 @@ def get_alumniprofile(request,token):
         if user.is_alumni:
             current_site = get_current_site(request)
             alumni = get_object_or_404(Alumni.objects.all(), user=user)
-            profile =get_object_or_404(AlumniProfile.objects.all(),alumni=alumni)
+            if not AlumniProfile.objects.filter(alumni=alumni).exists():
+                AlumniProfile.objects.create(alumni=alumni)
+            profile = AlumniProfile.objects.get(alumni=alumni)
             message = {
                 "username":user.username,
                 "first_name":user.first_name,
