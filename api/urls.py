@@ -4,6 +4,7 @@ from .views import ActivateAccount,ResetAccountPassword, ManuelVerificationAPIVi
 from .views import SMSVerifyAccount,SMSVerifyToken,get_userprofile,get_alumniprofile
 from .views import ProfileCreateOrUpdateAPIView,UserSearchList,CreateJobAPIView
 
+from .views import jobs_types
 urlpatterns = [
     url(r'^auth/login/$',
         obtain_auth_token,
@@ -27,5 +28,6 @@ urlpatterns = [
     url(r'^profile/update/',ProfileCreateOrUpdateAPIView.as_view()),
     url(r'^get/profile/(?P<token>[\w.@+-]+)/$',get_alumniprofile),
     url(r'^user/search/(?P<term>[\w.@+-]+)/$', UserSearchList.as_view()),
-    url(r'^job/create/$', CreateJobAPIView.as_view())
+    url(r'^job/create/$', CreateJobAPIView.as_view()),
+    url(r'^job/get/types/$', jobs_types)
 ]

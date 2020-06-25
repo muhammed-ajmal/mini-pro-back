@@ -7,8 +7,13 @@ from account.models import Alumni
 User = get_user_model()
 # Create your models here.
 
+
 JOB_TYPES = [
     ('FT','Full Time'),
+    ('PT','Part Time'),
+    ('IN', 'Intern'),
+    ('CN', 'Contract'),
+
 ]
 
 APPL_STATUS =[
