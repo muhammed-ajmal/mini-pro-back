@@ -46,7 +46,7 @@ urlpatterns = [
     url(r'^event/create/$', CreateEventAPIView.as_view()),
     url(r'^get/events/$', EventList.as_view()),
     url(r'^ref/create/$', CreateReferralRequestAPIView.as_view()),
-    url(r'^get/refrequest/(?P<token>[\w.@+-]+)/to/$', ReferralRequestListTo.as_view()),
-    url(r'^get/refrequest/(?P<token>[\w.@+-]+)/from/$', ReferralRequestListFrom.as_view())
+    url(r'^get/refrequest/(?P<token>[\w.@+-]+)/requested/$', ReferralRequestListTo.as_view()),
+    url(r'^get/refrequest/(?P<token>[\w.@+-]+)/recieved/$', ReferralRequestListFrom.as_view())
 
 ]
