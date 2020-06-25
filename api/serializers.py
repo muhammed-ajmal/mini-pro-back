@@ -374,3 +374,14 @@ class CreateEventsSerializer(serializers.ModelSerializer):
         event.save()
         #validated_data.update({'token':token})
         return event
+
+class EventListSerializer(serializers.ModelSerializer):
+    creator = serializers.SerializerMethodField()
+    job_type = serializers.SerializerMethodField()
+    def get_job_type(self,obj):
+        return obj.get_event_status_display()
+    def get_creator(self, obj):
+        return "%s" % obj.conducted_by
+    class Meta:
+        model = EventsByMentor
+        fields = '__all__'
