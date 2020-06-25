@@ -377,8 +377,8 @@ class CreateEventsSerializer(serializers.ModelSerializer):
 
 class EventListSerializer(serializers.ModelSerializer):
     creator = serializers.SerializerMethodField()
-    job_type = serializers.SerializerMethodField()
-    def get_job_type(self,obj):
+    event_type = serializers.SerializerMethodField()
+    def get_event_type(self,obj):
         return obj.get_event_status_display()
     def get_creator(self, obj):
         return "%s" % obj.conducted_by
