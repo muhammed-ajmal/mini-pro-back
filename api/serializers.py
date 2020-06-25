@@ -400,7 +400,8 @@ class CreateReferralRequestSerializer(serializers.ModelSerializer):
     def validate(self,data):
         print(data)
         user = self.get_user(data['token']).user
-        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        if ReferralRequest.objects.filter(request_to=data['request_to']).filter(request_from=user).exists():
+            raise serializers.ValidationError("request already exists")
         return data
     def create(self, validated_data):
         token = validated_data['token']
