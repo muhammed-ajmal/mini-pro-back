@@ -83,6 +83,9 @@ INSTALLED_APPS = [
     'account',
     'userdb',
     'api',
+
+    #jobs
+    'jobs'
 ]
 
 
