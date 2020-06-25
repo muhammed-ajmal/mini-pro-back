@@ -397,6 +397,16 @@ class UserSearchList(generics.ListAPIView):
         return User.objects.filter(Q(first_name__icontains = term) | Q(last_name__icontains = term) | Q(username__icontains = term))
 
 
+class UsersList(generics.ListAPIView):
+    serializer_class = UserSearchSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        return User.objects.filter(is_alumni=True)
+        
 class CreateJobAPIView(CreateAPIView):
     serializer_class = CreateJobSerializer
     permission_classes = [AllowAny]
@@ -419,5 +429,6 @@ class JobList(generics.ListAPIView):
         for the currently authenticated user.
         """
         return Job.objects.all()
+
 
 obtain_auth_token = ObtainAuthToken.as_view()
