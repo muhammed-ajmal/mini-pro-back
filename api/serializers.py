@@ -258,3 +258,12 @@ class CreateJobSerializer(serializers.ModelSerializer):
         job.save()
         #validated_data.update({'token':token})
         return job
+        
+class JobListSerializer(serializers.ModelSerializer):
+    creator = serializers.SerializerMethodField()
+
+    def get_creator(self, obj):
+        return "%s" % obj.posted_by.user
+    class Meta:
+        model = Job
+        fields = '__all__'
