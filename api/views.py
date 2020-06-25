@@ -406,7 +406,18 @@ class UsersList(generics.ListAPIView):
         for the currently authenticated user.
         """
         return User.objects.filter(is_alumni=True)
-        
+
+class UsersByUsername(generics.ListAPIView):
+    serializer_class = UserSearchSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        username = self.kwargs['username']
+        return User.objects.get(username=username)
+
 class CreateJobAPIView(CreateAPIView):
     serializer_class = CreateJobSerializer
     permission_classes = [AllowAny]
