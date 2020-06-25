@@ -441,6 +441,21 @@ class JobList(generics.ListAPIView):
         """
         return Job.objects.all()
 
+class EmployerJobList(generics.ListAPIView):
+    serializer_class = JobListSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        token = self.kwargs['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        user = key.user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        return Job.objects.filter(posted_by=alumni)
+        
 def sendjobmail(self,request,user,template,email_subject,object,email):
     current_site = get_current_site(request)
     message = render_to_string(template, {
