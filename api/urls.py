@@ -5,7 +5,7 @@ from .views import SMSVerifyAccount,SMSVerifyToken,get_userprofile,get_alumnipro
 from .views import ProfileCreateOrUpdateAPIView,UserSearchList,CreateJobAPIView
 from .views import UsersList, UsersByUsername,ApplyJobAPIView
 from .views import jobs_types,JobList,EmployerJobList
-from .views import JobDetailView
+from .views import JobDetailView,ApplicationList
 urlpatterns = [
     url(r'^auth/login/$',
         obtain_auth_token,
@@ -36,5 +36,6 @@ urlpatterns = [
     url(r'^job/create/$', CreateJobAPIView.as_view()),
     url(r'^job/get/types/$', jobs_types),
     url(r'^get/jobs/byemployer/(?P<token>[\w.@+-]+)/$', EmployerJobList.as_view()),
-    url(r'^job/apply/$', ApplyJobAPIView.as_view())
+    url(r'^job/apply/$', ApplyJobAPIView.as_view()),
+    url(r'^get/job/(?P<id>[\w.@+-]+)/applications/$', ApplicationList.as_view())
 ]

@@ -34,7 +34,7 @@ from authy.api import AuthyApiClient
 from rest_framework import generics
 from api.serializers import ProfileCreateOrUpdateSerializers,UserSearchSerializer
 from api.serializers import CreateJobSerializer
-from api.serializers import JobListSerializer,ApplyJobSerializer
+from api.serializers import JobListSerializer,ApplyJobSerializer,ApplicationListSerializer
 from jobs.models import Job,Application
 authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
@@ -451,7 +451,7 @@ class JobDetailView(generics.ListAPIView):
         """
         id = self.kwargs['id']
         return Job.objects.filter(id=id)
-        
+
 class EmployerJobList(generics.ListAPIView):
     serializer_class = JobListSerializer
     permission_classes = [AllowAny]
@@ -502,5 +502,15 @@ class ApplyJobAPIView(CreateAPIView):
             {**create_message,**request.data},
             status=status.HTTP_201_CREATED,
         )
+class ApplicationList(generics.ListAPIView):
+    serializer_class = ApplicationListSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        id = self.kwargs['id']
+        return Application.objects.filter(applying_job=id)
 
 obtain_auth_token = ObtainAuthToken.as_view()

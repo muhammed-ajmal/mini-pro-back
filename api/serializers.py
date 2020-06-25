@@ -297,3 +297,50 @@ class ApplyJobSerializer(serializers.ModelSerializer):
         apply.save()
         #validated_data.update({'token':token})
         return apply
+
+class ApplicationListSerializer(serializers.ModelSerializer):
+    applied_by = serializers.SerializerMethodField()
+    linkedin = serializers.SerializerMethodField()
+    twitter = serializers.SerializerMethodField()
+    facebook = serializers.SerializerMethodField()
+    bio = serializers.SerializerMethodField()
+    work = serializers.SerializerMethodField()
+    organization = serializers.SerializerMethodField()
+    application_status = serializers.SerializerMethodField()
+    def get_application_status(self,obj):
+        return obj.get_application_status_display()
+    def get_applied_by(self, obj):
+        return obj.applicant.first_name
+    def get_linkedin(self,obj):
+        user = obj.applicant
+        alumni = Alumni.objects.get(user=user)
+        profile = AlumniProfile.objects.get(alumni=alumni)
+        return profile.linkedin
+    def get_twitter(self,obj):
+        user = obj.applicant
+        alumni = Alumni.objects.get(user=user)
+        profile = AlumniProfile.objects.get(alumni=alumni)
+        return profile.twitter
+    def get_facebook(self,obj):
+        user = obj.applicant
+        alumni = Alumni.objects.get(user=user)
+        profile = AlumniProfile.objects.get(alumni=alumni)
+        return profile.facebook
+    def get_bio(self,obj):
+        user = obj.applicant
+        alumni = Alumni.objects.get(user=user)
+        profile = AlumniProfile.objects.get(alumni=alumni)
+        return profile.bio
+    def get_work(self,obj):
+        user = obj.applicant
+        alumni = Alumni.objects.get(user=user)
+        profile = AlumniProfile.objects.get(alumni=alumni)
+        return profile.work
+    def get_organization(self,obj):
+        user = obj.applicant
+        alumni = Alumni.objects.get(user=user)
+        profile = AlumniProfile.objects.get(alumni=alumni)
+        return profile.organization
+    class Meta:
+        model = Application
+        fields = '__all__'
