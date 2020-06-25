@@ -236,7 +236,7 @@ class UserSearchSerializer(serializers.ModelSerializer):
     alumni = AlumniUserSearchSerializer()
     class Meta:
         model = User
-        fields = ('username','email','first_name','last_name','alumni')
+        fields = ('id','username','email','first_name','last_name','alumni')
 
 
 #Job
@@ -416,5 +416,5 @@ class CreateReferralRequestSerializer(serializers.ModelSerializer):
 
 class ReferralRequestListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EventsByMentor
+        model = ReferralRequest
         fields = '__all__'
