@@ -85,7 +85,10 @@ INSTALLED_APPS = [
     'api',
 
     #jobs
-    'jobs'
+    'jobs',
+
+    #events
+    'events',
 ]
 
 
