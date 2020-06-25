@@ -1,9 +1,9 @@
 {% extends 'dash/dashbase.html' %}
-{% block dashtitle %}Home {% endblock %}
+{% block dashtitle %}Fundraiser {% endblock %}
 {% block body %}
 <!--Grid column-->
 
-{% if request.user.alumni.verify_status == True %}
+
 
 <div class="row">
   {% for event in events %}
@@ -41,5 +41,5 @@ recent contributions
 </div>
 <!-- Card -->
   <!--/.Card-->
-{% endif %}
+
 {% endblock %}
