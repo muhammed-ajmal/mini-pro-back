@@ -3,7 +3,7 @@ from .views import CreateUserAPIView, LogoutUserAPIView,account_batch, account_d
 from .views import ActivateAccount,ResetAccountPassword, ManuelVerificationAPIView,get_userdetails
 from .views import SMSVerifyAccount,SMSVerifyToken,get_userprofile,get_alumniprofile
 from .views import ProfileCreateOrUpdateAPIView,UserSearchList,CreateJobAPIView
-from .views import UsersList, UsersByUsername
+from .views import UsersList, UsersByUsername,ApplyJobAPIView
 from .views import jobs_types,JobList
 urlpatterns = [
     url(r'^auth/login/$',
@@ -32,5 +32,6 @@ urlpatterns = [
     url(r'^user/list/$', UsersList.as_view()),
     url(r'^get/jobs/$', JobList.as_view()),
     url(r'^job/create/$', CreateJobAPIView.as_view()),
-    url(r'^job/get/types/$', jobs_types)
+    url(r'^job/get/types/$', jobs_types),
+        url(r'^job/apply/$', ApplyJobAPIView.as_view())
 ]

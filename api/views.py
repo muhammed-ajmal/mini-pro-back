@@ -34,7 +34,7 @@ from authy.api import AuthyApiClient
 from rest_framework import generics
 from api.serializers import ProfileCreateOrUpdateSerializers,UserSearchSerializer
 from api.serializers import CreateJobSerializer
-from api.serializers import JobListSerializer
+from api.serializers import JobListSerializer,ApplyJobSerializer
 from jobs.models import Job,Application
 authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
@@ -441,5 +441,20 @@ class JobList(generics.ListAPIView):
         """
         return Job.objects.all()
 
+class ApplyJobAPIView(CreateAPIView):
+    serializer_class = ApplyJobSerializer
+    permission_classes = [AllowAny]
+    parser_classes = (MultiPartParser, FormParser)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        create_message = {"message": "created"}
+        request.data.pop('resume')
+        return Response(
+            {**create_message,**request.data},
+            status=status.HTTP_201_CREATED,
+        )
 
 obtain_auth_token = ObtainAuthToken.as_view()

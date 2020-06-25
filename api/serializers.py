@@ -258,7 +258,7 @@ class CreateJobSerializer(serializers.ModelSerializer):
         job.save()
         #validated_data.update({'token':token})
         return job
-        
+
 class JobListSerializer(serializers.ModelSerializer):
     creator = serializers.SerializerMethodField()
 
@@ -267,3 +267,31 @@ class JobListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = '__all__'
+
+
+class ApplyJobSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(required=True)
+    class Meta:
+        model = Application
+        fields = ('applying_job','name','resume','contact','email','answers_to_employer','questions_to_employer','token')
+
+    def get_user(self,token):
+        key = get_object_or_404(Token.objects.all(), key=token)
+        return key
+    def validate(self,data):
+        print(data)
+        user = self.get_user(data['token']).user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        if Application.objects.filter(applying_job=data['applying_job']).filter(applicant=user).exists():
+            raise serializers.ValidationError("already applied")
+        return data
+    def create(self, validated_data):
+        token = validated_data['token']
+        user = self.get_user(token).user
+        validated_data.update({'applicant':user})
+        token = validated_data.pop('token')
+        print(validated_data)
+        apply = super(ApplyJobSerializer, self).create(validated_data)
+        apply.save()
+        #validated_data.update({'token':token})
+        return apply
