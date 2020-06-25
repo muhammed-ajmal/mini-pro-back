@@ -35,7 +35,7 @@ from rest_framework import generics
 from api.serializers import ProfileCreateOrUpdateSerializers,UserSearchSerializer
 from api.serializers import CreateJobSerializer
 from api.serializers import JobListSerializer
-
+from jobs.models import Job,Application
 authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
 resetpassword = PasswordResetTokenGenerator()
