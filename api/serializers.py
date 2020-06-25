@@ -415,6 +415,9 @@ class CreateReferralRequestSerializer(serializers.ModelSerializer):
         return ref_request
 
 class ReferralRequestListSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+    def get_username(self, obj):
+        return "%s" % obj.request_to.username
     class Meta:
         model = ReferralRequest
         fields = '__all__'
