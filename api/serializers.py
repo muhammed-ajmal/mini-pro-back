@@ -234,7 +234,7 @@ class CreateJobSerializer(serializers.ModelSerializer):
     token = serializers.CharField(required=True)
     class Meta:
         model = Job
-        fields = ('job_name','company_name','description','job_type','location','workexp_req','base_salary','last_date','token')
+        fields = ('job_name','company_name','description','job_type','location','workexp_req','base_salary','questions_to_applicants','last_date','req_skills','token')
 
     def get_user(self,token):
         key = get_object_or_404(Token.objects.all(), key=token)
