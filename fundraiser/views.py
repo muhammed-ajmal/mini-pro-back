@@ -20,7 +20,19 @@ import requests
 from .forms import AmountForm
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
 
+from django.http import HttpResponseRedirect
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import login
+
+
+def fundraiser_redirect(request,token):
+    key = get_object_or_404(Token.objects.all(), key=token)
+    user = key.user
+    login(request,user)
+    return HttpResponseRedirect("https://www.alumni-cucek.ml/fundraiser/")
 
 def payment(request,eventid,orderid,amount):
     event = get_object_or_404(FundRaiserEvent, id=eventid)
@@ -82,7 +94,7 @@ def response(request):
         messages.warning(request, 'failed transaction')
         return redirect('fundraiser')
 
-
+@login_required
 def home(request):
     events = FundRaiserEvent.objects.all()
     txns = Transaction.objects.filter(made_on__lte=timezone.now()).filter(txn_status='success').order_by('-made_on')

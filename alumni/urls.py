@@ -61,6 +61,7 @@ urlpatterns = [
     path('verification/token/', alumni.sms_token_validation, name='sms_token_validation'),  # noqa: E501
     path('profile/update/account', alumni.update_profile, name='update_profile'),
     path('fundraiser/',fund_views.home,name='fundraiser'),
+    path('fundraiser/<token>/',fund_views.fundraiser_redirect),
     path('contribute/response/', fund_views.response),
     path('contribute/pay/<eventid>/',fund_views.Amount, name='contribute_event'),
     path('contribute/<eventid>/<orderid>/<amount>/',fund_views.payment,name='payment'),
