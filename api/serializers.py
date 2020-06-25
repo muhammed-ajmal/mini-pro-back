@@ -17,6 +17,8 @@ from rest_framework.authtoken.models import Token
 
 from jobs.models import Job,Application
 
+from refferral.models import ReferralRequest
+
 
 from events.models import EventRegistration,EventsByMentor
 
@@ -385,3 +387,28 @@ class EventListSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventsByMentor
         fields = '__all__'
+
+class CreateReferralRequestSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(required=True)
+    class Meta:
+        model = ReferralRequest
+        fields = ('request_to','request_note', 'token')
+
+    def get_user(self,token):
+        key = get_object_or_404(Token.objects.all(), key=token)
+        return key
+    def validate(self,data):
+        print(data)
+        user = self.get_user(data['token']).user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        return data
+    def create(self, validated_data):
+        token = validated_data['token']
+        user = self.get_user(token).user
+        token = validated_data.pop('token')
+        validated_data.update({'request_from':user})
+        print(validated_data)
+        ref_request = super(CreateReferralRequestSerializer, self).create(validated_data)
+        ref_request.save()
+        #validated_data.update({'token':token})
+        return ref_request

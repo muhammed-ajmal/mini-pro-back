@@ -40,6 +40,9 @@ from jobs.models import Job,Application
 from api.serializers import CreateEventsSerializer,EventListSerializer
 from events.models import EventRegistration,EventsByMentor
 
+from api.serializers import CreateReferralRequestSerializer
+from refferral.models import ReferralRequest
+
 authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
 resetpassword = PasswordResetTokenGenerator()
@@ -553,5 +556,19 @@ class EventList(generics.ListAPIView):
         for the currently authenticated user.
         """
         return EventsByMentor.objects.all()
+
+class CreateReferralRequestAPIView(CreateAPIView):
+    serializer_class = CreateReferralRequestSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        create_message = {"message": "created"}
+        return Response(
+            {**create_message,**request.data},
+            status=status.HTTP_201_CREATED,
+        )
 
 obtain_auth_token = ObtainAuthToken.as_view()
