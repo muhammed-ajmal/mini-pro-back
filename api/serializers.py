@@ -14,6 +14,9 @@ from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 
+
+from jobs.models import Job,Application
+
 class AuthTokenSerializer(AuthTokenSerializer):
     def validate(self, attrs):
         username = attrs.get('username')
@@ -224,3 +227,31 @@ class UserSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username','email','first_name','last_name','alumni')
+
+
+#Job
+class CreateJobSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(required=True)
+    class Meta:
+        model = Job
+        fields = ('job_name','company_name','description','job_type','location','workexp_req','base_salary','last_date','token')
+
+    def get_user(self,token):
+        key = get_object_or_404(Token.objects.all(), key=token)
+        return key
+    def validate(self,data):
+        print(data)
+        user = self.get_user(data['token']).user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        return data
+    def create(self, validated_data):
+        token = validated_data['token']
+        user = self.get_user(token).user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        validated_data.update({'posted_by':alumni})
+        token = validated_data.pop('token')
+        print(validated_data)
+        job = super(CreateJobSerializer, self).create(validated_data)
+        job.save()
+        #validated_data.update({'token':token})
+        return job
