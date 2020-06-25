@@ -69,6 +69,9 @@ class CreateUserSerializer(serializers.HyperlinkedModelSerializer):
              raise serializers.ValidationError(errors)
         if User.objects.filter(email=email).exists():
             raise serializers.ValidationError("Email already exists")
+        contact = data['alumni']['contact']
+        if Alumni.objects.filter(contact=contact).exists():
+            raise serializers.ValidationError("contact already taken")
         return data
 
     class Meta:
