@@ -416,7 +416,7 @@ class UsersByUsername(generics.ListAPIView):
         for the currently authenticated user.
         """
         username = self.kwargs['username']
-        return User.objects.get(username=username)
+        return User.objects.filter(username=username)
 
 class CreateJobAPIView(CreateAPIView):
     serializer_class = CreateJobSerializer
