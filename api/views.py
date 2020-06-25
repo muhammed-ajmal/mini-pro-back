@@ -441,6 +441,18 @@ class JobList(generics.ListAPIView):
         """
         return Job.objects.all()
 
+def sendjobmail(self,request,user,template,email_subject,object,email):
+    current_site = get_current_site(request)
+    message = render_to_string(template, {
+    'user': user,
+    'job': object,
+    })
+    #'token': account_activation_token.make_token(user),
+    to_email = user.email
+    email1 = EmailMessage(email_subject, message, to=[to_email],from_email='alumni@cucek.in')
+    email1.send()
+    email2 = EmailMessage(email_subject, message, to=[email],from_email='alumni@cucek.in')
+    email2.send()
 class ApplyJobAPIView(CreateAPIView):
     serializer_class = ApplyJobSerializer
     permission_classes = [AllowAny]
@@ -451,6 +463,14 @@ class ApplyJobAPIView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         create_message = {"message": "created"}
+        token = request.data['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        user = key.user
+        template = 'jobs/mail/job_applied.html'
+        job = Job.objects.get(id=request.data['applying_job'])
+        email_subject = 'You applied for a Job : ' + job.job_name
+        email = request.data['email']
+        sendjobmail(self,request,user,template,email_subject,job,email)
         request.data.pop('resume')
         return Response(
             {**create_message,**request.data},

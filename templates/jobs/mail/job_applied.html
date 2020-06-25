@@ -1,0 +1,15 @@
+{% autoescape off %}
+Hi {{ user.first_name }} {{ user.last_name }},
+
+You applied for a {{ job.job_name }} successfully, you will get a email
+notification, when the employer at {{ job.company_name }} review your application.
+
+Thank You,
+
+{{ job.posted_by.alumni.username }}
+{{ job.posted_by.alumni.email }}
+{{ job.posted_by.alumni.contact }}
+
+Alumni Portal
+
+{% endautoescape %}
