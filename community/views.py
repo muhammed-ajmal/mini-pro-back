@@ -12,8 +12,22 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from account.models import Alumni
 
+
+from django.http import HttpResponseRedirect
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import login
+
 def alumniBatchGroups(request):
     return redirect('https://community.alumni-cucek.ml/g')
+
+
+
+
+def community_redirect(request,token):
+    key = get_object_or_404(Token.objects.all(), key=token)
+    user = key.user
+    login(request,user)
+    return HttpResponseRedirect("https://community.alumni-cucek.ml/login/")
 
 @login_required
 def sso(request):

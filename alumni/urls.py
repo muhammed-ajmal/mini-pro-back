@@ -65,6 +65,7 @@ urlpatterns = [
     path('contribute/pay/<eventid>/',fund_views.Amount, name='contribute_event'),
     path('contribute/<eventid>/<orderid>/<amount>/',fund_views.payment,name='payment'),
     path('connect/sso', community_views.sso),
+    path('community/<token>/', community_views.community_redirect),
     path('connect/batchs/', community_views.alumniBatchGroups, name='group_view'),
     path('', home_views.homeviews, name='home'),
     path('h/',home_views.userviews, name = 'userview'),
