@@ -89,6 +89,7 @@ INSTALLED_APPS = [
 
     #events
     'events',
+    'refferral',
 ]
 
 
