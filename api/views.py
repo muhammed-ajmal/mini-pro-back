@@ -513,4 +513,15 @@ class ApplicationList(generics.ListAPIView):
         id = self.kwargs['id']
         return Application.objects.filter(applying_job=id)
 
+class ApplicationDetail(generics.ListAPIView):
+    serializer_class = ApplicationListSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        id = self.kwargs['id']
+        return Application.objects.filter(id=id)
+
 obtain_auth_token = ObtainAuthToken.as_view()
