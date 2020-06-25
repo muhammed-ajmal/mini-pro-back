@@ -413,3 +413,8 @@ class CreateReferralRequestSerializer(serializers.ModelSerializer):
         ref_request.save()
         #validated_data.update({'token':token})
         return ref_request
+
+class ReferralRequestListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventsByMentor
+        fields = '__all__'

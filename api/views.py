@@ -40,7 +40,7 @@ from jobs.models import Job,Application
 from api.serializers import CreateEventsSerializer,EventListSerializer
 from events.models import EventRegistration,EventsByMentor
 
-from api.serializers import CreateReferralRequestSerializer
+from api.serializers import CreateReferralRequestSerializer,ReferralRequestListSerializer
 from refferral.models import ReferralRequest
 
 authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
@@ -570,5 +570,31 @@ class CreateReferralRequestAPIView(CreateAPIView):
             {**create_message,**request.data},
             status=status.HTTP_201_CREATED,
         )
+
+class ReferralRequestListTo(generics.ListAPIView):
+    serializer_class = ReferralRequestListSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        token = self.kwargs['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        user = key.user
+        return ReferralRequest.objects.filter(request_from=user)
+
+class ReferralRequestListFrom(generics.ListAPIView):
+    serializer_class = ReferralRequestListSerializer
+    permission_classes = [AllowAny]
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        token = self.kwargs['token']
+        key = get_object_or_404(Token.objects.all(), key=token)
+        user = key.user
+        return ReferralRequest.objects.filter(request_to=user)
 
 obtain_auth_token = ObtainAuthToken.as_view()

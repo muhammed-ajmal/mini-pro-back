@@ -9,7 +9,7 @@ from .views import JobDetailView,ApplicationList,ApplicationDetail
 
 from .views import CreateEventAPIView,EventList
 
-from .views import CreateReferralRequestAPIView
+from .views import CreateReferralRequestAPIView,ReferralRequestListTo,ReferralRequestListFrom
 urlpatterns = [
     url(r'^auth/login/$',
         obtain_auth_token,
@@ -45,6 +45,8 @@ urlpatterns = [
     url(r'^get/job/(?P<id>[\w.@+-]+)/application/$', ApplicationDetail.as_view()),
     url(r'^event/create/$', CreateEventAPIView.as_view()),
     url(r'^get/events/$', EventList.as_view()),
-    url(r'^ref/create/$', CreateReferralRequestAPIView.as_view())
+    url(r'^ref/create/$', CreateReferralRequestAPIView.as_view()),
+    url(r'^get/refrequest/(?P<token>[\w.@+-]+)/to$', ReferralRequestListTo.as_view()),
+    url(r'^get/refrequest/(?P<token>[\w.@+-]+)/from$', ReferralRequestListFrom.as_view())
 
 ]
