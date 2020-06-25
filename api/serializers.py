@@ -17,6 +17,11 @@ from rest_framework.authtoken.models import Token
 
 from jobs.models import Job,Application
 
+
+from events.models import EventRegistration,EventsByMentor
+
+
+
 class AuthTokenSerializer(AuthTokenSerializer):
     def validate(self, attrs):
         username = attrs.get('username')
@@ -344,3 +349,28 @@ class ApplicationListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = '__all__'
+
+class CreateEventsSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(required=True)
+    class Meta:
+        model = EventsByMentor
+        fields = ('event_name','event_date','description','location','special_req','token')
+
+    def get_user(self,token):
+        key = get_object_or_404(Token.objects.all(), key=token)
+        return key
+    def validate(self,data):
+        print(data)
+        user = self.get_user(data['token']).user
+        alumni = get_object_or_404(Alumni.objects.all(), user=user)
+        return data
+    def create(self, validated_data):
+        token = validated_data['token']
+        user = self.get_user(token).user
+        validated_data.update({'conducted_by':user})
+        token = validated_data.pop('token')
+        print(validated_data)
+        event = super(CreateEventsSerializer, self).create(validated_data)
+        event.save()
+        #validated_data.update({'token':token})
+        return event

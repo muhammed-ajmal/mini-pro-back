@@ -6,6 +6,8 @@ from .views import ProfileCreateOrUpdateAPIView,UserSearchList,CreateJobAPIView
 from .views import UsersList, UsersByUsername,ApplyJobAPIView
 from .views import jobs_types,JobList,EmployerJobList
 from .views import JobDetailView,ApplicationList,ApplicationDetail
+
+from .views import CreateEventAPIView
 urlpatterns = [
     url(r'^auth/login/$',
         obtain_auth_token,
@@ -38,6 +40,7 @@ urlpatterns = [
     url(r'^get/jobs/byemployer/(?P<token>[\w.@+-]+)/$', EmployerJobList.as_view()),
     url(r'^job/apply/$', ApplyJobAPIView.as_view()),
     url(r'^get/job/(?P<id>[\w.@+-]+)/applications/$', ApplicationList.as_view()),
-    url(r'^get/job/(?P<id>[\w.@+-]+)/application/$', ApplicationDetail.as_view())
+    url(r'^get/job/(?P<id>[\w.@+-]+)/application/$', ApplicationDetail.as_view()),
+    url(r'^event/create/$', CreateEventAPIView.as_view())
 
 ]

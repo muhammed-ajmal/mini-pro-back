@@ -36,6 +36,10 @@ from api.serializers import ProfileCreateOrUpdateSerializers,UserSearchSerialize
 from api.serializers import CreateJobSerializer
 from api.serializers import JobListSerializer,ApplyJobSerializer,ApplicationListSerializer
 from jobs.models import Job,Application
+
+from api.serializers import CreateEventsSerializer
+from events.models import EventRegistration,EventsByMentor
+
 authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
 resetpassword = PasswordResetTokenGenerator()
@@ -523,5 +527,21 @@ class ApplicationDetail(generics.ListAPIView):
         """
         id = self.kwargs['id']
         return Application.objects.filter(id=id)
+
+
+
+class CreateEventAPIView(CreateAPIView):
+    serializer_class = CreateEventsSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        create_message = {"message": "created"}
+        return Response(
+            {**create_message,**request.data},
+            status=status.HTTP_201_CREATED,
+        )
 
 obtain_auth_token = ObtainAuthToken.as_view()
