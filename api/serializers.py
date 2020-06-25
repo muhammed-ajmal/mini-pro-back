@@ -261,7 +261,9 @@ class CreateJobSerializer(serializers.ModelSerializer):
 
 class JobListSerializer(serializers.ModelSerializer):
     creator = serializers.SerializerMethodField()
-
+    job_type = serializers.SerializerMethodField()
+    def get_job_type(self,obj):
+        return obj.get_job_type_display()
     def get_creator(self, obj):
         return "%s" % obj.posted_by.user
     class Meta:
