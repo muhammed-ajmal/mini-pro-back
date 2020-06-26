@@ -399,7 +399,7 @@ def get_alumniprofile(request,token):
     if request.method == 'GET':
         key = get_object_or_404(Token.objects.all(), key=token)
         user = key.user
-        if user.is_alumni:
+        if user.is_alumni or user.is_student:
             current_site = get_current_site(request)
             alumni = get_object_or_404(Alumni.objects.all(), user=user)
             if not AlumniProfile.objects.filter(alumni=alumni).exists():
@@ -449,7 +449,7 @@ class UsersList(generics.ListAPIView):
         This view should return a list of all the purchases
         for the currently authenticated user.
         """
-        return User.objects.filter(is_alumni=True)
+        return User.objects.filter(Q(is_alumni=True) | Q(is_student=True))
 
 class UsersByUsername(generics.ListAPIView):
     serializer_class = UserSearchSerializer
