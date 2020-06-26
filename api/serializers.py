@@ -40,8 +40,8 @@ class AuthTokenSerializer(AuthTokenSerializer):
                 msg = _('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
             if not user.is_active:
-                msg ={'notactivated':'Either activate or request for new account activation link.'}
-                raise serializers.ValidationError(msg, code='authorization')
+                msg =_('Either activate or request for new account activation link.')
+                raise serializers.ValidationError('Either activate or request for new account activation link.')
         else:
             msg = _('Must include "username" and "password".')
             raise serializers.ValidationError(msg, code='authorization')
@@ -139,7 +139,7 @@ class CreateStudentUserSerializer(serializers.HyperlinkedModelSerializer):
         alumni = Alumni.objects.create(user=user, **alumni_user)
         AlumniProfile.objects.create(alumni=alumni)
         return user
-        
+
 class ActivateAccount(serializers.Serializer):
     email = serializers.EmailField()
     def save(self):
