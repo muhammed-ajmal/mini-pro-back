@@ -44,6 +44,9 @@ from api.serializers import CreateStudentUserSerializer
 from api.serializers import CreateReferralRequestSerializer,ReferralRequestListSerializer
 from refferral.models import ReferralRequest
 
+from datetime import datetime
+
+
 authy_api = AuthyApiClient(settings.ACCOUNT_SECURITY_API_KEY)
 
 resetpassword = PasswordResetTokenGenerator()
@@ -289,6 +292,14 @@ def get_userdetails(request,token):
             }
         return Response(message)
 
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def student_batch(request):
+    if request.method == 'GET':
+        batchs = CourseCompletion.objects.filter(start__year=datetime.now().year)
+        serializer = AccountBatchSerializer(batchs, many=True)
+        return Response(serializer.data)
 
 @api_view(['GET'])
 @authentication_classes([])
