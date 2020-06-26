@@ -274,7 +274,7 @@ def get_userdetails(request,token):
     if request.method == 'GET':
         key = get_object_or_404(Token.objects.all(), key=token)
         user = key.user
-        if user.is_alumni:
+        if user.is_alumni or user.is_student:
             alumni = get_object_or_404(Alumni.objects.all(), user=user)
             message = {
             "username" : user.username,
