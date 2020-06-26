@@ -7,7 +7,7 @@ from .views import UsersList, UsersByUsername,ApplyJobAPIView
 from .views import jobs_types,JobList,EmployerJobList
 from .views import JobDetailView,ApplicationList,ApplicationDetail
 
-from .views import CreateEventAPIView,EventList,CreateStudentUserAPIView
+from .views import CreateEventAPIView,EventList,CreateStudentUserAPIView,student_batch
 
 from .views import CreateReferralRequestAPIView,ReferralRequestListTo,ReferralRequestListFrom
 urlpatterns = [
@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^auth/account/password/reset$', ResetAccountPassword.as_view()),
     url(r'^auth/account/create/batches/$',CreateAccountBatchAPIView.as_view()),
     url(r'^auth/account/get/batches/$', account_batch),
+    url(r'^auth/account/get/batches/student/$', student_batch),
     url(r'^auth/account/get/departments/$', account_department),
     url(r'^auth/account/get/usertype/(?P<token>[\w.@+-]+)/$',get_userdetails),
     url(r'^auth/account/verify/alumni/manuel/$', ManuelVerificationAPIView.as_view()),
