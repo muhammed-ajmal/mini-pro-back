@@ -33,7 +33,7 @@ from authy.api import AuthyApiClient
 
 from rest_framework import generics
 from api.serializers import ProfileCreateOrUpdateSerializers,UserSearchSerializer
-from api.serializers import CreateJobSerializer
+from api.serializers import CreateJobSerializer,JobStatusUpdateSerializers
 from api.serializers import JobListSerializer,ApplyJobSerializer,ApplicationListSerializer
 from jobs.models import Job,Application
 
@@ -568,6 +568,31 @@ class ApplicationDetail(generics.ListAPIView):
         id = self.kwargs['id']
         return Application.objects.filter(id=id)
 
+class JobApplicationUpdateAPIView(CreateAPIView):
+    serializer_class = JobStatusUpdateSerializers
+    permission_classes = [AllowAny]
+
+    def post(self,request,*args,**kwargs):
+        serializer = self.get_serializer(data=request.data)
+        print(request.data)
+        serializer.is_valid(raise_exception=True)
+        id = request.data['id']
+        application = Application.objects.get(id=id)
+        message = {'status':'pending'}
+        if request.data['application_status'] == 'SH':
+            application.application_status = 'SH'
+            application.save()
+            template = 'jobs/mail/job_shortlist.html'
+            job = Job.objects.get(id=application.applying_job.id)
+            email_subject = 'Congrats Your Application Shortlisted for : ' + job.job_name
+            email = application.email
+            message = {'status':'shorlisted'}
+            sendjobmail(self,request,application.applicant,template,email_subject,job,email)
+
+        return Response(
+            {**serializer.data,**message},
+            status=status.HTTP_201_CREATED
+            )
 
 
 class CreateEventAPIView(CreateAPIView):

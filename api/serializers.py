@@ -395,6 +395,17 @@ class ApplicationListSerializer(serializers.ModelSerializer):
         model = Application
         fields = '__all__'
 
+class JobStatusUpdateSerializers(serializers.ModelSerializer):
+    #user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
+    id = serializers.CharField()
+    class Meta:
+        model = Application
+        fields = ('id','application_status')
+
+    def validate(self,data):
+        pass
+        return data
+        
 class CreateEventsSerializer(serializers.ModelSerializer):
     token = serializers.CharField(required=True)
     class Meta:

@@ -1,0 +1,12 @@
+{% autoescape off %}
+Hi {{ user.first_name }} {{ user.last_name }},
+
+You application for the job  {{ job.job_name }} at {{ job.company_name }} shortlisted,
+you may be contacted by the HR {{ job.posted_by.alumni.first_name }} {{ job.posted_by.alumni.last_name }}soon.
+
+Thank You,
+
+{{ job.posted_by.alumni.username }}
+Alumni, Portal
+
+{% endautoescape %}
