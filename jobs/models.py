@@ -19,6 +19,7 @@ JOB_TYPES = [
 APPL_STATUS =[
 ('APP','Approved'),
 ('PED','Pending'),
+('SH','SHORTLIST'),
 ]
 def user_resume_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
