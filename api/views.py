@@ -40,7 +40,7 @@ from jobs.models import Job,Application
 from api.serializers import CreateEventsSerializer,EventListSerializer
 from events.models import EventRegistration,EventsByMentor
 
-from api.views import CreateStudentUserSerializer
+from api.serializers import CreateStudentUserSerializer
 from api.serializers import CreateReferralRequestSerializer,ReferralRequestListSerializer
 from refferral.models import ReferralRequest
 
