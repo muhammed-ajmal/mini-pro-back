@@ -297,7 +297,7 @@ def get_userdetails(request,token):
 @permission_classes([])
 def student_batch(request):
     if request.method == 'GET':
-        batchs = CourseCompletion.objects.filter(start__year=datetime.now().year)
+        batchs = CourseCompletion.objects.filter(start__year=datetime.now().year-3)
         serializer = AccountBatchSerializer(batchs, many=True)
         return Response(serializer.data)
 
