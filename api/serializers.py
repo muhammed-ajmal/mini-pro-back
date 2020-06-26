@@ -97,6 +97,49 @@ class CreateUserSerializer(serializers.HyperlinkedModelSerializer):
         Alumni.objects.create(user=user, **alumni_user)
         return user
 
+class CreateStudentUserSerializer(serializers.HyperlinkedModelSerializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True,
+                                     style={'input_type': 'password'})
+    email = serializers.EmailField()
+    alumni = AlumniUserSerializer(required=True)
+    def validate(self, data):
+        email = data['email']
+        username = data['username']
+        password = data.get('password')
+        errors = dict()
+        contact = data['alumni']['contact']
+        if Alumni.objects.filter(contact=contact).exists():
+            raise serializers.ValidationError("contact already taken")
+        try:
+            validators.validate_password(password=password, user=User)
+        except exceptions.ValidationError as e:
+            errors['password'] = list(e.messages)
+        if User.objects.filter(username=username).exists():
+            raise serializers.ValidationError({'username':"Username already taken"})
+        if errors:
+             raise serializers.ValidationError(errors)
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError({'email':"Email already exists"})
+        return data
+
+    class Meta:
+        model = User
+        fields = ('username', 'password','email', 'first_name', 'last_name','alumni')
+        write_only_fields = ('password')
+        read_only_fields = ('is_staff', 'is_superuser', 'is_active',)
+
+    def create(self, validated_data):
+        alumni_user = validated_data.pop('alumni')
+        user = super(CreateStudentUserSerializer, self).create(validated_data)
+        user.set_password(validated_data['password'])
+        user.is_student = True
+        user.is_active = False
+        user.save()
+        alumni = Alumni.objects.create(user=user, **alumni_user)
+        AlumniProfile.objects.create(alumni=alumni)
+        return user
+        
 class ActivateAccount(serializers.Serializer):
     email = serializers.EmailField()
     def save(self):

@@ -7,7 +7,7 @@ from .views import UsersList, UsersByUsername,ApplyJobAPIView
 from .views import jobs_types,JobList,EmployerJobList
 from .views import JobDetailView,ApplicationList,ApplicationDetail
 
-from .views import CreateEventAPIView,EventList
+from .views import CreateEventAPIView,EventList,CreateStudentUserAPIView
 
 from .views import CreateReferralRequestAPIView,ReferralRequestListTo,ReferralRequestListFrom
 urlpatterns = [
@@ -17,6 +17,9 @@ urlpatterns = [
     url(r'^auth/register/$',
         CreateUserAPIView.as_view(),
         name='auth_user_create'),
+    url(r'^auth/register/student/$',
+        CreateStudentUserAPIView.as_view(),
+        name='auth_user_student_create'),
     url(r'^auth/logout/$',
         LogoutUserAPIView.as_view(),
         name='auth_user_logout'),

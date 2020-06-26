@@ -40,6 +40,7 @@ from jobs.models import Job,Application
 from api.serializers import CreateEventsSerializer,EventListSerializer
 from events.models import EventRegistration,EventsByMentor
 
+from api.views import CreateStudentUserSerializer
 from api.serializers import CreateReferralRequestSerializer,ReferralRequestListSerializer
 from refferral.models import ReferralRequest
 
@@ -73,6 +74,31 @@ class CreateUserAPIView(CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         # We create a token than will be used for future auth
+        user=serializer.instance
+        token = account_activation_token.make_token(user)
+        template = 'verify/mail/activate_account_mail.html'
+        email_subject = 'Activate Your Acc'
+        sendmail(self,request,user,template,token,email_subject)
+        print('send message')
+        create_message = {"message": "Your account is created successfully now open the actvtn mail, which we already send and activate the account"}
+        return Response(
+            {**serializer.data, **create_message},
+            status=status.HTTP_201_CREATED,
+            headers=headers
+        )
+
+class CreateStudentUserAPIView(CreateAPIView):
+    serializer_class = CreateStudentUserSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        print(request.data['username'])
+        self.perform_create(serializer)
+        print(serializer.data)
+        headers = self.get_success_headers(serializer.data)
+        print(headers)
         user=serializer.instance
         token = account_activation_token.make_token(user)
         template = 'verify/mail/activate_account_mail.html'
