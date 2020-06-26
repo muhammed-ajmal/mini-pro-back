@@ -1,0 +1,15 @@
+{% autoescape off %}
+Hi {{ user.first_name }} {{ user.last_name }},
+
+Your last transaction status is :  {{ STATUS }}
+
+Fund Raiser Event : {{ event }}
+transaction amount : {{ TXNAMOUNT }}
+ORDERID : {{ ORDER_ID }}
+
+
+Thank you ,
+
+Alumni, Portal
+
+{% endautoescape %}

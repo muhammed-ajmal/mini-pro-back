@@ -27,6 +27,24 @@ from django.http import HttpResponseRedirect
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login
 
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.utils.encoding import force_bytes, force_text
+from django.template.loader import render_to_string
+
+def sendtxnmail(request,resp,user,event):
+    template = 'pay/mail/txn_mail.html'
+    email_subject = 'Contribution Acknwldgmnt. '
+    message = render_to_string(template, {
+    'user': user,
+    'event': event.event_name,
+    'ORDER_ID' : resp['ORDER_ID'],
+    'TXNAMOUNT': resp['TXN_AMOUNT'],
+    'STATUS': 'INITIATED',
+    })
+    to_email = user.email
+    email = EmailMessage(email_subject, message, to=[to_email],from_email='alumni@cucek.in')
+    email.send()
 
 def fundraiser_redirect(request,token):
     key = get_object_or_404(Token.objects.all(), key=token)
@@ -55,6 +73,7 @@ def payment(request,eventid,orderid,amount):
     txn = Transaction.objects.get(order_id=order_id)
     txn.checksum = data_dict['CHECKSUMHASH']
     txn.save()
+    sendtxnmail(request,data_dict,request.user,event)
     context = {
         'payment_url': settings.PAYTM_PAYMENT_GATEWAY_URL,
         'comany_name': settings.PAYTM_COMPANY_NAME,
