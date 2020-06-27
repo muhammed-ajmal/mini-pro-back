@@ -141,6 +141,9 @@ def activate_account(request, uidb64, token):
         user.is_active = True
         user.save()
         alumni = Alumni.objects.get(user=user)
+        if AlumniDB.objects.filter(email=user.email).exists():
+            alumni.verify_status = True
+            alumni.save()
         groupname = str(alumni.department)+'-'+str(alumni.batch)
         headers = {
          'Api-Key': settings.DISCOURSE_API,
